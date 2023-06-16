@@ -94,9 +94,9 @@ const PatientList: FC = () => {
           {/* Scheduled Patient List */}
           <div className="w-full">
             <div className="pb-[75px]">
-              {cardsArray.map((idx: any) => (
+              {cardsArray.map((idx: any, kkk: any) => (
                 <PatientThumbnail
-                  key={idx.name + idx.telephone + idx.doctor}
+                  key={"thumbnail" + idx.name + kkk}
                   context={idx}
                 />
               ))}

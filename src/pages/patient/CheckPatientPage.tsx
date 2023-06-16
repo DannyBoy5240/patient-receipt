@@ -100,7 +100,6 @@ const CheckPatient: FC = () => {
     const patientID = context.patientid;
     const doctorID = context.doctorid;
     const data = { patientID, doctorID };
-    console.log("pthistory patientID -> ", patientID, " doctorID -> ", doctorID);
     await fetch(BACKEND_URL + "/getpthistory", {
       method: "POST",
       headers: {
@@ -392,10 +391,7 @@ const CheckPatient: FC = () => {
             <div>
               <div
                 className="flex flex-row justify-between p-3 my-2 border-t border-b border-opacity-50 transform scale-y-10"
-                onClick={() => {
-                  setCurrentSelect(1);
-                  getPatientHistory();
-                }}
+                onClick={() => setCurrentSelect(1)}
               >
                 <div>既往史</div>
                 <div className="flex flex-row justify-center">
@@ -479,10 +475,7 @@ const CheckPatient: FC = () => {
             <div>
               <div
                 className="flex flex-row justify-between p-3 my-2 border-t border-b border-opacity-50 transform scale-y-10"
-                onClick={() => {
-                  setCurrentSelect(2);
-                  getPatientHistory();
-                }}
+                onClick={() => setCurrentSelect(2)}
               >
                 <div>現病史</div>
                 <div className="flex flex-row justify-center">
@@ -1045,7 +1038,7 @@ const CheckPatient: FC = () => {
     : <div className="relative">
     <div className="h-screen overflow-y-auto bg-[#FAFCFF]">
       {/* Header */}
-      <Header title="到診證明書" />
+      <Header title="-到診證明書" />
       {/* Main Page */}
       <div className="m-4 p-3 mb-[160px] rounded-lg shadow-lg">
         {/* Title */}
@@ -1110,7 +1103,7 @@ const CheckPatient: FC = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="text-center text-xs text-[#666666]">
+              <div className="text-xs text-[#666666]">
                 <span className="text-black">{context && context.remark && context.remark.split("@@").length > 0 ? context.remark.split("@@")[0] : ""}</span><span className="px-1">日藥/每日</span>
                 <span className="text-black">{context && context.remark && context.remark.split("@@").length > 0 ? context.remark.split("@@")[1] : ""}</span><span className="px-1">次/共</span>
                 <span className="text-black">{context && context.remark && context.remark.split("@@").length > 0 ? context.remark.split("@@")[2] : ""}</span><span className="px-1">包</span>

@@ -175,7 +175,8 @@ const PatientResultItem: FC<PatientResultItemProps> = ({
                 <div>
                   <img
                     src={PatientResultItemIcon}
-                    className="w-[26px] h-[35px] max-w-none"
+                    className="w-[26px] h-[35px] max-w-none disable-touch-callout pointer-events-none disable-image-draggable"
+                    draggable="false"
                   />
                 </div>
               </div>

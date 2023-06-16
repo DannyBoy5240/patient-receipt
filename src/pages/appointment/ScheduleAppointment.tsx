@@ -26,10 +26,20 @@ const ScheduleAppointment = () => {
   const location = useLocation();
   const context = location.state.context;
 
+  console.log("schedule context -> ", context);
+
   const [recordStatus, setRecordStatus] = useState<boolean[]>([]);
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [selectedTime, setSelectedTime] = useState(moment().format("HH:mm"));
+  const contextDate = context && context.length > 0 ? context[0].date : null;
+  const [selectedDate, setSelectedDate] = useState<Date | null>(contextDate ? new Date(contextDate): new Date());
+  const [selectedTime, setSelectedTime] = useState<string>(contextDate
+    ? new Date(contextDate).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
+    : moment().format('HH:mm'));
+  
 
   useEffect(() => {
     setRecordStatus(Array(recordStatus.length).fill(false));
@@ -80,27 +90,50 @@ const ScheduleAppointment = () => {
 
     const doctorID = _user.doctorid;
     const doctorName = _user.username;
+    if (!context || context.legnth == 0)  return;
     const patientID = context[0].patientid;
     const dateTime = formatDate(selectedDate) + " " + selectedTime;
 
-    // add new appointment to backend database
-    const data = { doctorName, doctorID, patientID, dateTime };
-    await fetch(BACKEND_URL + "/addnewappointment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Add New Appointment succeed!");
-        navigate("/patient");
+    if (contextDate) {
+      // update appointment to backend database
+      const cardID = context[0].cardid;
+      const data = { cardID, dateTime};
+      await fetch(BACKEND_URL + "/updateappointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       })
-      .catch((error) => {
-        console.error(error);
-        // handle error
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Update Appointment succeed!");
+          navigate("/patient");
+        })
+        .catch((error) => {
+          console.error(error);
+          // handle error
+        });
+    } else {
+      // add new appointment to backend database
+      const data = { doctorName, doctorID, patientID, dateTime };
+      await fetch(BACKEND_URL + "/addnewappointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Add New Appointment succeed!");
+          navigate("/patient");
+        })
+        .catch((error) => {
+          console.error(error);
+          // handle error
+        });
+    }
   };
 
   const viewPastHistoryHandler = async (idx: any) => {
@@ -214,7 +247,7 @@ const ScheduleAppointment = () => {
                   placeholder="HH : MM"
                 /> */}
                 <TimePicker
-                  defaultValue={moment()}
+                  defaultValue={moment(selectedTime, 'HH:mm')}
                   showSecond={false}
                   className="px-1"
                   onChange={(value) =>

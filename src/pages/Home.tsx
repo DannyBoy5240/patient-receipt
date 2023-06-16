@@ -47,8 +47,14 @@ const Home: FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log("homedata -> ", data.data);
-        setCardsArray(data.data.slice(0, 4));
+        console.log("homedata -> ", data.data);
+        const filteredData = data.data.filter((item: any) => {
+          const itemDate = new Date(item.date);
+          return itemDate > new Date() && itemDate.getDate() === new Date().getDate() &&
+                 itemDate.getMonth() === new Date().getMonth() &&
+                 itemDate.getFullYear() === new Date().getFullYear();
+        });
+        setCardsArray(filteredData);
       })
       .catch((error) => {
         console.error(error);

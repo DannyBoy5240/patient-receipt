@@ -217,7 +217,7 @@ const RecipePage: FC = () => {
                     </tbody>
                   </table>
                 </div>
-                <div className="text-center text-xs text-[#666666]">
+                <div className="text-xs text-[#666666]">
                   <span className="text-black">{remarks.length > 0 ? remarks[0] : ""}</span><span className="px-1">日藥/每日</span>
                   <span className="text-black">{remarks.length > 0 ? remarks[1] : ""}</span><span className="px-1">次/共</span>
                   <span className="text-black">{remarks.length > 0 ? remarks[2] : ""}</span><span className="px-1">包</span>

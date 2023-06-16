@@ -155,8 +155,8 @@ app.post("/updatemailpassword", (req, res) => {
 app.post("/getptcards", (req, res) => {
   const { doctorID, curDate } = req.body;
   db.query(
-    "SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.doctorid = ? AND pt_cards.date >= ?",
-    [doctorID, curDate],
+    "SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.doctorid = ?",
+    [doctorID],
     (err, rows) => {
       if (err) {
         res.status(500).send(err.message);
@@ -503,6 +503,24 @@ app.post("/addnewappointment", (req, res) => {
         .json({ message: "Error adding new appointment : " + err });
     } else {
       res.status(200).json({ message: "Adding new appointment succeed!" });
+    }
+  });
+});
+
+// update appointment
+app.post("/updateappointment", (req, res) => {
+  const { cardID, dateTime } = req.body;
+
+  const sql = `UPDATE pt_cards SET date = ? WHERE cardid = ?`;
+
+  // Execute the query
+  db.query(sql, [dateTime, cardID], (err, rows) => {
+    if (err) {
+      res
+        .status(500)
+        .json({ message: "Error updating appointment : " + err });
+    } else {
+      res.status(200).json({ message: "Updating appointment succeed!" });
     }
   });
 });
