@@ -356,6 +356,24 @@ app.post("/getaccounts", (req, res) => {
   });
 });
 
+app.post("/getaccountbyemail", (req, res) => {
+
+  const email = req.body.email;
+
+  const sql = "SELECT * from users WHERE email = ?";
+
+  db.query(sql, [email], (err, rows) => {
+    if (err) {
+      res.status(500).json({ message: "Error loading account : " + err });
+    } else {
+      res.status(200).json({
+        message: "Loading account list successfully!",
+        data: rows,
+      });
+    }
+  });
+});
+
 // get company profile information
 app.post("/getcompanyinfo", (req, res) => {
   const sql = "SELECT * from company";

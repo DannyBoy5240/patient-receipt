@@ -272,35 +272,62 @@ const CheckPatient: FC = () => {
       for (let i = 0; i < filesArray.length; i++) {
         const file = filesArray[i];
         const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          setLoadFiles((prevFiles) => [...prevFiles, reader.result as string]);
+
+        // update image size
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            if (!ctx) return;
+  
+            // Set the desired width and height for the resized image
+            const maxWidth = 800;
+            const maxHeight = 800;
+  
+            let width = img.width;
+            let height = img.height;
+  
+            // Calculate the aspect ratio
+            if (width > maxWidth || height > maxHeight) {
+              const aspectRatio = width / height;
+  
+              if (width > maxWidth) {
+                width = maxWidth;
+                height = width / aspectRatio;
+              }
+  
+              if (height > maxHeight) {
+                height = maxHeight;
+                width = height * aspectRatio;
+              }
+            }
+  
+            // Set the canvas dimensions to match the resized image dimensions
+            canvas.width = width;
+            canvas.height = height;
+  
+            // Draw the resized image onto the canvas
+            ctx.drawImage(img, 0, 0, width, height);
+  
+            // Get the resized image as a data URL
+            const resizedDataUrl = canvas.toDataURL(file.type);
+  
+            // Use the resized image data URL as needed
+            setLoadFiles((prevFiles) => [...prevFiles, resizedDataUrl]);
+          };
+  
+          img.src = event.target?.result as string;
         };
+
+        reader.readAsDataURL(file);
+        // reader.onload = () => {
+        //   setLoadFiles((prevFiles) => [...prevFiles, reader.result as string]);
+        // };
       }
     }
   };
-
-  // const [file, setFile] = useState<File>();
-  // const [tipMessage, setTipMessage] = useState("");
-
-  // const handlePhotoCapture = async () => {
-  //   console.log("camera capture clicked!");
-  //   setTipMessage("---");
-  //   const mediaDevices = navigator.mediaDevices as any;
-  //   const stream = await mediaDevices.getUserMedia({ video: true });
-  //   const video = document.createElement("video");
-  //   video.srcObject = stream;
-  //   video.play();
-  //   const canvas = document.createElement("canvas");
-  //   canvas.width = video.videoWidth;
-  //   canvas.height = video.videoHeight;
-  //   const context = canvas.getContext("2d")!;
-  //   context.drawImage(video, 0, 0, canvas.width, canvas.height);
-  //   const dataUrl = canvas.toDataURL("image/jpeg");
-  //   const blob = await fetch(dataUrl).then((res) => res.blob());
-  //   setFile(new File([blob], "photo.jpg", { type: "image/jpeg" }));
-  //   stream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
-  // };
 
   const handleUpload = async (file: any) => {
     console.log("handleUpload");

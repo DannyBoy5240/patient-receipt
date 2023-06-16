@@ -15,6 +15,7 @@ import PatientThumbnail from "../components/patient/PatientThumbnail";
 
 interface UserData {
   username: string;
+  avatar : string;
 }
 
 interface CompanyInfoType {
@@ -82,6 +83,29 @@ const Home: FC = () => {
       });
   };
 
+  const getUserData = async (email: any) => {
+    if (!email)   return;
+
+    const data = { email };
+    await fetch(BACKEND_URL + "/getaccountbyemail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data.length > 0) {
+          setUserData(data.data[0]);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        // handle error
+      });
+  }
+
   // Hook for User Authentication
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -89,7 +113,8 @@ const Home: FC = () => {
       // Redirect to login page if token is not present
       navigate("/");
     } else {
-      setUserData(JSON.parse(token).user);
+      getUserData(JSON.parse(token).user.email);
+      // setUserData(JSON.parse(token).user);
       // fetch patient card information from backend
       getPatientCards(JSON.parse(token).user);
       // get Company Information
@@ -112,10 +137,18 @@ const Home: FC = () => {
                 className="rounded-full border-none"
                 onClick={() => navigate("/viewaccount", { state: { mode: 1 } })}
               >
-                <img
-                  src={AvatarSample}
-                  className="w-12 h-12 max-w-none rounded-full"
-                />
+                {
+                  userData && userData.avatar ?
+                    <img
+                      src={BACKEND_URL + "/uploads/" + userData.avatar}
+                      className="w-12 h-12 max-w-none rounded-full"
+                    />
+                  : 
+                    <img
+                      src={AvatarSample}
+                      className="w-12 h-12 max-w-none rounded-full"
+                    />
+                }
               </div>
               <div
                 className="absolute w-2 h-2 top-1 right-1 rounded-full"
