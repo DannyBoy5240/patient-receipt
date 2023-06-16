@@ -2,6 +2,8 @@ import { FC, useState, useEffect } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
+import imageCompression from "browser-image-compression";
+
 import Theme from "../../assets/color";
 import { BACKEND_URL } from "../../constants";
 
@@ -265,68 +267,95 @@ const CheckPatient: FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [loadFiles, setLoadFiles] = useState<string[]>([]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const filesArray = Array.from(event.target.files);
-      setFiles(filesArray);
-      for (let i = 0; i < filesArray.length; i++) {
-        const file = filesArray[i];
-        const reader = new FileReader();
 
-        // update image size
-        reader.onload = (event) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
+      const resizedFiles = await Promise.all(
+        filesArray.map(async (file) => {
+          // const resizedDataUrl = await resizeImage(file);
+          // const resizedFile = dataURLToFile(resizedDataUrl, file.name);
+          // return resizedFile;
+          const compressedFile = await compressImage(file);
+          return compressedFile;
+        })
+      );
 
-            if (!ctx) return;
-  
-            // Set the desired width and height for the resized image
-            const maxWidth = 800;
-            const maxHeight = 800;
-  
-            let width = img.width;
-            let height = img.height;
-  
-            // Calculate the aspect ratio
-            if (width > maxWidth || height > maxHeight) {
-              const aspectRatio = width / height;
-  
-              if (width > maxWidth) {
-                width = maxWidth;
-                height = width / aspectRatio;
-              }
-  
-              if (height > maxHeight) {
-                height = maxHeight;
-                width = height * aspectRatio;
-              }
-            }
-  
-            // Set the canvas dimensions to match the resized image dimensions
-            canvas.width = width;
-            canvas.height = height;
-  
-            // Draw the resized image onto the canvas
-            ctx.drawImage(img, 0, 0, width, height);
-  
-            // Get the resized image as a data URL
-            const resizedDataUrl = canvas.toDataURL(file.type);
-  
-            // Use the resized image data URL as needed
-            setLoadFiles((prevFiles) => [...prevFiles, resizedDataUrl]);
-          };
-  
-          img.src = event.target?.result as string;
-        };
-
-        reader.readAsDataURL(file);
-        // reader.onload = () => {
-        //   setLoadFiles((prevFiles) => [...prevFiles, reader.result as string]);
-        // };
-      }
+      setFiles(resizedFiles);
+      setLoadFiles(filesArray.map((file) => URL.createObjectURL(file)));
     }
+  };
+
+  const compressImage = (file: File): Promise<File> => {
+    const options = {
+      maxSizeMB: 1, // Maximum size in megabytes
+      maxWidthOrHeight: 800, // Maximum width or height
+    };
+
+    return new Promise((resolve, reject) => {
+      imageCompression(file, options)
+        .then((compressedFile) => {
+          resolve(compressedFile);
+        })
+        .catch((error) => {
+          console.error("Error compressing image:", error);
+          reject(file);
+        });
+    });
+  };
+
+  const resizeImage = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) return;
+
+        const maxWidth = 500;
+        const maxHeight = 500;
+
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          const aspectRatio = width / height;
+
+          if (width > maxWidth) {
+            width = maxWidth;
+            height = width / aspectRatio;
+          }
+
+          if (height > maxHeight) {
+            height = maxHeight;
+            width = height * aspectRatio;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const resizedDataUrl = canvas.toDataURL(file.type);
+        resolve(resizedDataUrl);
+      };
+
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const dataURLToFile = (dataUrl: string, filename: string): File => {
+    const arr = dataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)?.[1] || "";
+    const bstr = atob(arr[1]);
+    const n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    for (let i = 0; i < n; i++) {
+      u8arr[i] = bstr.charCodeAt(i);
+    }
+    return new File([u8arr], filename, { type: mime });
   };
 
   const handleUpload = async (file: any) => {
