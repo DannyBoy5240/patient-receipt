@@ -589,7 +589,7 @@ app.post("/updatecheckpatient", (req, res) => {
   if (!context || !context.cardid) return;
 
   // update card information
-  let sql = `UPDATE pt_cards SET albumtext = ?, disease = ?, diagnosis = ?, syndromes = ?, medicines = ?, remark = ?, pasthistory = ?, pasthistorydate =? WHERE cardid = ?`;
+  let sql = `UPDATE pt_cards SET albumtext = ?, disease = ?, diagnosis = ?, syndromes = ?, medicines = ?, remark = ?, pasthistory = ?, pasthistorydate = ?, checked = 1 WHERE cardid = ?`;
   const values = [
     context.albumtext,
     context.disease,
@@ -670,8 +670,7 @@ app.post("/getptcardpayment", (req, res) => {
     );
   } else {
     db.query(
-      `SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.date < ?${paidMode == 1 ? "AND pt_cards.paid = 0 " : ""}`,
-      [curDate],
+      `SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.checked = 1 ${paidMode == 1 ? "AND pt_cards.paid = 0 " : ""}`,
       (err, rows) => {
         if (err) {
           res.status(500).send(err.message);

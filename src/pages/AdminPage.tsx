@@ -69,6 +69,9 @@ const AdminPage: FC = () => {
           <div className="w-full">
             <div className="pb-[75px]">
               {context
+                .filter((item: any) => {
+                  return item.checked == 1;
+                })
                 .sort(
                   (a: any, b: any) =>
                     new Date(b.date).getTime() - new Date(a.date).getTime()
