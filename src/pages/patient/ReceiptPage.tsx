@@ -2,6 +2,8 @@ import { FC, useState, useEffect } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
+import html2canvas from 'html2canvas';
+
 import Theme from "../../assets/color";
 import { BACKEND_URL } from "../../constants";
 
@@ -136,6 +138,52 @@ const ReceiptPage: FC = () => {
     window.print();
   };
 
+  const [isOpenShare, setIsOpenShare] = useState(false);
+
+  const shareOnSocialHandler = async (mode: any) => {
+    try {
+      // Capture the screenshot of the entire document body
+      const canvas = await html2canvas(document.body, {
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        windowWidth: document.documentElement.clientWidth,
+        windowHeight: document.documentElement.clientHeight,
+      });
+      const screenshotDataUrl = canvas.toDataURL();
+
+      if (mode == 1) {  // Email Share
+        // Generate the mailto URL with the pre-filled email content
+        const subject = encodeURIComponent('Check out this screenshot!');
+        const body = encodeURIComponent('<p>Here is the screenshot:</p><img src="' + screenshotDataUrl + '">');
+        const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
+
+        // Open a new window with the mailto URL
+        const newWindow = window.open(mailtoUrl, '_blank');
+
+        // If the new window fails to open, fallback to window.location.href
+        if (!newWindow) {
+          window.location.href = mailtoUrl;
+        }
+      } else {  // WhatsApp Share
+        // Generate the base64-encoded image data
+        const imageData = screenshotDataUrl.replace(/^data:image\/(png|jpeg);base64,/, '');
+
+        // Construct the WhatsApp share URL with the pre-filled image data
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent('Check out this screenshot:')}&media=${encodeURIComponent(imageData)}`;
+
+        // Open a new window with the WhatsApp share URL
+        const newWindow = window.open(whatsappUrl, '_blank');
+
+        // If the new window fails to open, fallback to the WhatsApp web URL
+        if (!newWindow) {
+          window.location.href = whatsappUrl;
+        }
+      }
+    } catch (error) {
+      console.log('Error capturing or sharing the screenshot by email:', error);
+    }
+  };
+
   return (
     <div className="relative">
       <div className="relative h-screen overflow-y-auto">
@@ -267,11 +315,18 @@ const ReceiptPage: FC = () => {
           <div className="p-3" onClick={() => setIsEditMode(true)}>
             <img src={editIcon} className="max-w-none" />
           </div>
-          <div
-            className="p-3"
-            onClick={() => console.log("Share on Email and WhatsApp!")}
-          >
-            <img src={shareIcon} className="max-w-none" />
+          <div className="relative p-3">
+            <div onClick={() => setIsOpenShare(!isOpenShare)}>
+              <img src={shareIcon} className="max-w-none" />
+            </div>
+            {
+              isOpenShare ?
+                <div className="absolute top-[-15px] left-[-20px] text-xs flex flex-row">
+                  <div className="p-1 hover:bg-[#D3E7F6]" onClick={() => shareOnSocialHandler(1)}>Email</div>
+                  <div className="p-1 hover:bg-[#D3E7F6]" onClick={() => shareOnSocialHandler(2)}>WhatsApp</div>
+                </div>
+              : <></>
+            }
           </div>
           <div className="p-3" onClick={() => printHandler()}>
             <img src={printIcon} className="max-w-none" />
