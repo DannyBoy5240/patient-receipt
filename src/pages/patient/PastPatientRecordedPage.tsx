@@ -71,41 +71,41 @@ const PastPatientRecordedPage: FC = () => {
                 style={{ color: Theme.COLOR_DEFAULT }}
               >
                 <div>
-                  {context.name}
+                  {context ? context.name : ""}
                   <span className="px-1">
-                    ({context.sex == 1 ? "男" : "女"})
+                    ({context ? context.sex == 1 ? "男" : "女" : ""})
                   </span>
                 </div>
-                <div className="pl-3">{getPatientAge(context.birthday)}歲</div>
+                <div className="pl-3">{context ? getPatientAge(context.birthday) : ""}歲</div>
               </div>
               <div className="text-[#0C2036] text-opacity-80 text-sm">
-                {getOnlyDate1(context.date)}
+                {context ? getOnlyDate1(context.date) : ""}
               </div>
             </div>
             {/* Details */}
             <div className="flex flex-row text-sm py-1">
               <div style={{ color: Theme.COLOR_DEFAULT }}>身份證號碼:</div>
               <div className="pl-2 text-black text-opacity-60">
-                {context.patientid}
+                {context ? context.patientid : ""}
               </div>
             </div>
             <div className="flex flex-row text-sm py-1">
               <div style={{ color: Theme.COLOR_DEFAULT }}>出生日期:</div>
               <div className="pl-2 text-black text-opacity-60">
-                {getOnlyDate(context.birthday)}
+                {context ? getOnlyDate(context.birthday) : ""}
                 {/* {context.birthday} */}
               </div>
             </div>
             <div className="flex flex-row text-sm py-1">
               <div style={{ color: Theme.COLOR_DEFAULT }}>電話:</div>
               <div className="pl-2 text-black text-opacity-60">
-                {context.telephone}
+                {context ? context.telephone : ""}
               </div>
             </div>
             <div className="flex flex-row text-sm py-1">
               <div style={{ color: Theme.COLOR_DEFAULT }}>地址:</div>
               <div className="pl-2 text-black text-opacity-60">
-                {context.address}
+                {context ? context.address : ""}
               </div>
             </div>
             {/* Additional Detail */}
@@ -113,13 +113,13 @@ const PastPatientRecordedPage: FC = () => {
               <div className="grow flex flex-row">
                 <div style={{ color: Theme.COLOR_DEFAULT }}>緊急聯絡人:</div>
                 <div className="pl-2 text-black text-opacity-60">
-                  {context.emergency}
+                  {context ? context.emergency : ""}
                 </div>
               </div>
               <div className="grow flex flex-row">
                 <div style={{ color: Theme.COLOR_DEFAULT }}>緊急聯絡電話:</div>
                 <div className="pl-2 text-black text-opacity-60">
-                  {context.emergencynumber}
+                  {context ? context.emergencynumber : ""}
                 </div>
               </div>
             </div>

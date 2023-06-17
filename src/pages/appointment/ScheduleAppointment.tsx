@@ -28,7 +28,8 @@ const ScheduleAppointment = () => {
 
   console.log("schedule context -> ", context);
 
-  const [recordStatus, setRecordStatus] = useState<boolean[]>([]);
+  const [recordStatus, setRecordStatus] = useState<boolean[]>([false]);
+  const [recordEnabledIdx, setRecordEnabledIdx] = useState(0);
 
   const contextDate = context && context.length > 0 ? context[0].date : null;
   const [selectedDate, setSelectedDate] = useState<Date | null>(contextDate ? new Date(contextDate): new Date());
@@ -42,7 +43,15 @@ const ScheduleAppointment = () => {
   
 
   useEffect(() => {
-    setRecordStatus(Array(recordStatus.length).fill(false));
+    if (context) {
+      setRecordStatus(Array(context.length).fill(false));
+      const newRecordStatus = [...recordStatus];
+      newRecordStatus.map((idx, kkk) => {
+        newRecordStatus[kkk] = false;
+      });
+      newRecordStatus[0] = true;
+      setRecordStatus(newRecordStatus);
+    }
   }, []);
 
   // Hook for User Authentication
@@ -61,6 +70,7 @@ const ScheduleAppointment = () => {
     });
     newRecordStatus[id] = true;
     setRecordStatus(newRecordStatus);
+    setRecordEnabledIdx(id);
   };
 
   const getCurrentDate = () => {
@@ -91,12 +101,12 @@ const ScheduleAppointment = () => {
     const doctorID = _user.doctorid;
     const doctorName = _user.username;
     if (!context || context.legnth == 0)  return;
-    const patientID = context[0].patientid;
+    const patientID = context[recordEnabledIdx].patientid;
     const dateTime = formatDate(selectedDate) + " " + selectedTime;
 
     if (contextDate) {
       // update appointment to backend database
-      const cardID = context[0].cardid;
+      const cardID = context[recordEnabledIdx].cardid;
       const data = { cardID, dateTime};
       await fetch(BACKEND_URL + "/updateappointment", {
         method: "POST",
@@ -138,6 +148,7 @@ const ScheduleAppointment = () => {
 
   const viewPastHistoryHandler = async (idx: any) => {
     const patientid = context[idx].patientid;
+    console.log("patientid -> ", context, " --- ", idx);
     const data = { patientid };
     await fetch(BACKEND_URL + "/getptcardsbypatientid", {
       method: "POST",
@@ -148,10 +159,10 @@ const ScheduleAppointment = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.data.length > 0)
+        // if (data.data.length > 0)
           navigate("/pastpatientrecord", {
             state: {
-              context: data.data[0],
+              context: data.data.length > 0 ? data.data[0] : null,
             },
           });
       })
