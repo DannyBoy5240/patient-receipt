@@ -322,8 +322,8 @@ const ReceiptPage: FC = () => {
             {
               isOpenShare ?
                 <div className="absolute top-[-15px] left-[-20px] text-xs flex flex-row">
-                  <div className="p-1 hover:bg-[#D3E7F6]" onClick={() => shareOnSocialHandler(1)}>Email</div>
-                  <div className="p-1 hover:bg-[#D3E7F6]" onClick={() => shareOnSocialHandler(2)}>WhatsApp</div>
+                  <div className="p-1 hover:bg-[#D3E7F6] text-[#64B3EC]" onClick={() => shareOnSocialHandler(1)}>Email</div>
+                  <div className="p-1 hover:bg-[#D3E7F6] text-[#64B3EC]" onClick={() => shareOnSocialHandler(2)}>WhatsApp</div>
                 </div>
               : <></>
             }

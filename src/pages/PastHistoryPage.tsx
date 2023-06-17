@@ -94,6 +94,20 @@ const PastHistoryPage: FC = () => {
     setIsEditMode(false);
   };
 
+  const getCalcAge = (birthdate: string) => {
+    const today = new Date();
+    const birthdateObj = new Date(birthdate);
+    let age = today.getFullYear() - birthdateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthdateObj.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthdateObj.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  };
+
   return (
     <div className="relative">
       <div className="h-screen overflow-y-auto">
@@ -111,7 +125,7 @@ const PastHistoryPage: FC = () => {
                 {context ? context.name : ""} (
                 {context ? (context.sex == 1 ? "男" : "女") : ""})
               </div>
-              <div className="pl-3">{context ? context.age : ""}歲</div>
+              <div className="pl-3">{context ? getCalcAge(context.birthday) : ""}歲</div>
             </div>
             <div className="text-sm text-[#0C2036] text-opacity-80">
               {context ? getOnlyDate1(new Date().toString()) : ""}

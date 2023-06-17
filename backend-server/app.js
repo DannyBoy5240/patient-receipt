@@ -640,6 +640,25 @@ app.post("/updatecheckpatient", (req, res) => {
   });
 });
 
+// check patient status
+app.post("/checknewpatient", (req, res) => {
+  const patientid = req.body.patientid;
+
+  // save in sql database
+  const sql = `SELECT * from pt_cards WHERE patientid = ?`;
+  const values = [patientid];
+
+  db.query(sql, values, (err, rows) => {
+    if (err) {
+      res
+        .status(500)
+        .json({ message: "Uploading Album Image failed : " + err });
+    } else {
+      res.status(200).json({ message: "Uploading Album Image succeed!", data: rows });
+    }
+  });
+});
+
 // upload Avatar
 app.post("/uploadavatar", upload.single("file"), (req, res) => {
   const filename = req.file.filename;

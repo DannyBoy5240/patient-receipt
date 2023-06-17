@@ -94,7 +94,9 @@ const PatientList: FC = () => {
           {/* Scheduled Patient List */}
           <div className="w-full">
             <div className="pb-[75px]">
-              {cardsArray.map((idx: any, kkk: any) => (
+              {cardsArray.filter((item: any) => {
+                return item.checked == 0;
+              }).map((idx: any, kkk: any) => (
                 <PatientThumbnail
                   key={"thumbnail" + idx.name + kkk}
                   context={idx}

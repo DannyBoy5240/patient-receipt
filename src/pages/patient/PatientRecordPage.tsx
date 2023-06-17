@@ -42,6 +42,7 @@ const PatientRecordPage: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Get Patient Detail by ID successfully!");
+        console.log("context -> ", data.data);
         if (data.data.length > 0) {
           setPtCardList(data.data);
           setCurrentSelected(data.data.length - 1);
@@ -84,6 +85,20 @@ const PatientRecordPage: FC = () => {
     return formattedDate;
   };
 
+  const getCalcAge = (birthdate: string) => {
+    const today = new Date();
+    const birthdateObj = new Date(birthdate);
+    let age = today.getFullYear() - birthdateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthdateObj.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthdateObj.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  };
+
   return (
     <div className="relative">
       <div className="relative h-screen overflow-y-auto">
@@ -101,7 +116,7 @@ const PatientRecordPage: FC = () => {
                 {_context ? _context.name : ""} (
                 {_context ? (_context.sex == 1 ? "男" : "女") : ""})
               </div>
-              <div className="pl-3">{_context ? _context.age : ""}歲</div>
+              <div className="pl-3">{_context ? getCalcAge(_context.birthday) : ""}歲</div>
             </div>
             {isSearched ? (
               <div className="text-sm text-[#25617B] text-opacity-80">
@@ -141,9 +156,9 @@ const PatientRecordPage: FC = () => {
               ) : (
                 <div className="w-7"></div>
               )}
-              <div className="w-2/3" style={{ overflowWrap: "break-word" }}>
+              <div className="grow border border-[#64B3EC] p-2" style={{ overflowWrap: "break-word" }}>
                 {ptCardList && ptCardList.length > 0
-                  ? (ptCardList[currentSelected] as any).detail
+                  ? (ptCardList[currentSelected] as any).detail != "" ? (ptCardList[currentSelected] as any).detail : "NO CONTENT! "
                   : ""}
               </div>
               {currentSelected < ptCardList.length - 1 ? (

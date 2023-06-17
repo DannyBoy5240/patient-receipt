@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -19,10 +19,39 @@ interface PatientThumbnailProps {
 const PatientThumbnail: FC<PatientThumbnailProps> = ({ context }) => {
   const navigate = useNavigate();
 
+  console.log("thumbnail -> ", context);
+
   const [isCheckPatientOpen, setIsCheckPatientOpen] = useState(false);
   const [isOpenItemMenu, setIsOpenItemMenu] = useState(false);
   const [isItemDeleteOpen, setIsItemDeleteOpen] = useState(false);
   const [isItemDeleted, setIsItemDeleted] = useState(false);
+  const [isNewPatient, setIsNewPatient] = useState(false);
+
+  const checkNewPatientStatus = async (patientid: any) => {
+    const data = { patientid };
+    await fetch(BACKEND_URL + "/checknewpatient", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data.length > 1)   setIsNewPatient(false);
+        else setIsNewPatient(true);
+      })
+      .catch((error) => {
+        console.error(error);
+        // handle error
+      });
+  }
+
+  useEffect(() => {
+    if (context) {
+      checkNewPatientStatus(context.patientid);
+    }
+  }, [navigate])
 
   // change date time format
   const changeDateTimeFormat = (dateString: any) => {
@@ -113,14 +142,14 @@ ${
             <div className="flex justify-center">
               <div className="relative flex">
                 <img src={patientThumbnailIcon} className="max-w-none" />
-                {context.pasthistorydate && context.pasthistorydate != "" ? (
-                  <></>
-                ) : (
+                {isNewPatient ? (
                   <div className="absolute flex justify-center items-center inset-0">
-                    <div className="flex justify-center items-center">
-                      <img src={newPatientIcon} className="max-w-none" />
-                    </div>
+                  <div className="flex justify-center items-center">
+                    <img src={newPatientIcon} className="max-w-none" />
                   </div>
+                </div>
+                ) : (
+                  <></>
                 )}
               </div>
             </div>
@@ -134,9 +163,7 @@ ${
               className="text-xs pt-1"
               style={{ color: Theme.COLOR_SELECTED }}
             >
-              {context.pasthistorydate && context.pasthistorydate != ""
-                ? ""
-                : "新症"}
+              {isNewPatient ? "新症" : ""}
             </div>
           </div>
           {/* Content */}

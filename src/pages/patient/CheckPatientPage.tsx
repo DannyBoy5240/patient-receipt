@@ -415,6 +415,20 @@ const CheckPatient: FC = () => {
       });
   };
 
+  const getCalcAge = (birthdate: string) => {
+    const today = new Date();
+    const birthdateObj = new Date(birthdate);
+    let age = today.getFullYear() - birthdateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthdateObj.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthdateObj.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  };
+
   return (
     !isPreviewMode ?
     <div className="relative">
@@ -430,7 +444,7 @@ const CheckPatient: FC = () => {
                 {context.name} ({context.sex == 1 ? "男" : "女"})
               </div>
             </div>
-            <div>{context.age} 歲</div>
+            <div>{getCalcAge(context.birthday)} 歲</div>
           </div>
           <div className="absolute bottom-[-8px] w-full h-8 bg-white rounded-xl"></div>
         </div>

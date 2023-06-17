@@ -143,7 +143,8 @@ const PatientResultItem: FC<PatientResultItemProps> = ({
         {/* Image */}
         <div className="flex flex-row justify-center text-center">
           <div
-            className="flex justify-center w-[72px]"
+            className="flex justify-center w-[72px] disable-touch-callout disable-image-draggable"
+            draggable="false"
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onTouchStart={handleMouseDown}
