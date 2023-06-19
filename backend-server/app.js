@@ -609,34 +609,46 @@ app.post("/updatecheckpatient", (req, res) => {
       });
     }
 
-    // update present illness history
-    sql = `SELECT * from pt_history WHERE date = ?`;
-    db.query(sql, [presentillnessdate], (err, rows) => {
-      if (err) {
-        return res.status(500).json({
-          message: "Found present illness error : " + err,
-        });
-      } 
+    if (presentillness != "") {
+      const sql = `INSERT INTO pt_history (id, detail, date, doctorid) VALUES (?,?,?,?)`;
+      db.query(sql, [context.patientid, presentillness, presentillnessdate, context.doctorid], (err, rows) => {
+        if (err) {
+          return res.status(500).json({message: "Adding present illness error : " + err});
+        } 
+        res.status(200).json({message: "Adding present illness succeed!"});
+      });
+    } else  {
+      res.status(200).json({message: "Updating Check Patient Card Detail succeed!"});
+    }
 
-      if (rows.length == 0) {
-        const tsql = `INSERT INTO pt_history (id, detail, date, doctorid) VALUES (?,?,?,?)`;
-        db.query(tsql, [context.patientid, presentillness, presentillnessdate, context.doctorid], (err, rows) => {
-          if (err) {
-            return res.status(500).json({message: "Updating present illness error : " + err});
-          } 
-          res.status(200).json({message: "Updating present illness succeed!"});
-        });
-      } else {
-        const tsql = `UPDATE pt_history SET detail = ? WHERE date = ?`;
-        db.query(tsql, [presentillness, presentillnessdate], (err, rows) => {
-          if (err) {
-            res.status(500).json({message: "Updating present illness error : " + err});
-          } else {
-            res.status(200).json({message: "Updating present illness succeed!"});
-          }
-        });
-      }
-    });
+    // update present illness history
+    // sql = `SELECT * from pt_history WHERE date = ?`;
+    // db.query(sql, [presentillnessdate], (err, rows) => {
+    //   if (err) {
+    //     return res.status(500).json({
+    //       message: "Found present illness error : " + err,
+    //     });
+    //   } 
+
+    //   if (rows.length == 0) {
+    //     const tsql = `INSERT INTO pt_history (id, detail, date, doctorid) VALUES (?,?,?,?)`;
+    //     db.query(tsql, [context.patientid, presentillness, presentillnessdate, context.doctorid], (err, rows) => {
+    //       if (err) {
+    //         return res.status(500).json({message: "Updating present illness error : " + err});
+    //       } 
+    //       res.status(200).json({message: "Updating present illness succeed!"});
+    //     });
+    //   } else {
+    //     const tsql = `UPDATE pt_history SET detail = ? WHERE date = ?`;
+    //     db.query(tsql, [presentillness, presentillnessdate], (err, rows) => {
+    //       if (err) {
+    //         res.status(500).json({message: "Updating present illness error : " + err});
+    //       } else {
+    //         res.status(200).json({message: "Updating present illness succeed!"});
+    //       }
+    //     });
+    //   }
+    // });
   });
 });
 
@@ -670,14 +682,20 @@ app.post("/getptcardpayment", (req, res) => {
   const { searchText, curDate, paidMode } = req.body;
   if (searchText) {
     db.query(
-      `SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.date < ? AND (COALESCE(pt_cards.albumtext, '') LIKE ? OR COALESCE(pt_cards.disease, '') LIKE ? OR COALESCE(pt_cards.diagnosis, '') LIKE ? OR COALESCE(pt_cards.syndromes, '') LIKE ? OR COALESCE(pt_cards.medicines, '') LIKE ?)`,
+      `SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid 
+        WHERE (COALESCE(patients.name, '') LIKE ? OR COALESCE(patients.engname, '') LIKE ? OR COALESCE(patients.birthday, '') LIKE ? 
+          OR COALESCE(patients.patientid, '') LIKE ? OR COALESCE(patients.telephone, '') LIKE ? OR COALESCE(patients.address, '') LIKE ? 
+          OR COALESCE(patients.emergency, '') LIKE ? OR COALESCE(patients.emergencynumber, '') LIKE ? OR COALESCE(pt_cards.doctorid, '') LIKE ?
+          OR COALESCE(pt_cards.patientid, '') LIKE ? OR COALESCE(pt_cards.doctor, '') LIKE ? OR COALESCE(pt_cards.date, '') LIKE ?
+          OR COALESCE(pt_cards.albumtext, '') LIKE ? OR COALESCE(pt_cards.disease, '') LIKE ? OR COALESCE(pt_cards.diagnosis, '') LIKE ?
+          OR COALESCE(pt_cards.syndromes, '') LIKE ? OR COALESCE(pt_cards.medicines, '') LIKE ? OR COALESCE(pt_cards.remark, '') LIKE ?
+          OR COALESCE(pt_cards.toll, '') LIKE ? OR COALESCE(pt_cards.receipt, '') LIKE ? OR COALESCE(pt_cards.prescription, '') LIKE ?
+          OR COALESCE(pt_cards.pasthistory, '') LIKE ? OR COALESCE(pt_cards.pasthistorydate, '') LIKE ?)`,
       [
-        curDate,
-        `%${searchText}%`,
-        `%${searchText}%`,
-        `%${searchText}%`,
-        `%${searchText}%`,
-        `%${searchText}%`,
+        `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
+        `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
+        `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
+        `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`
       ],
       (err, rows) => {
         if (err) {
@@ -689,7 +707,9 @@ app.post("/getptcardpayment", (req, res) => {
     );
   } else {
     db.query(
-      `SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.checked = 1 ${paidMode == 1 ? "AND pt_cards.paid = 0 " : ""}`,
+      `SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid 
+        WHERE pt_cards.checked = 1 
+        ${paidMode == 1 ? "AND pt_cards.paid = 0 " : ""}`,
       (err, rows) => {
         if (err) {
           res.status(500).send(err.message);

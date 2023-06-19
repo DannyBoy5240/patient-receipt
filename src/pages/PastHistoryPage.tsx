@@ -16,7 +16,7 @@ import PatientResultItem from "../components/patient/PatientResultItem";
 const PastHistoryPage: FC = () => {
   const location = useLocation();
   const context = location.state.context;
-  console.log("pasthistory -> ", context);
+  console.log("current date -> ", new Date());
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [contentText, setContentText] = useState("");
@@ -127,9 +127,9 @@ const PastHistoryPage: FC = () => {
               </div>
               <div className="pl-3">{context ? getCalcAge(context.birthday) : ""}歲</div>
             </div>
-            <div className="text-sm text-[#0C2036] text-opacity-80">
+            {/* <div className="text-sm text-[#0C2036] text-opacity-80">
               {context ? getOnlyDate1(new Date().toString()) : ""}
-            </div>
+            </div> */}
           </div>
           {/* Content */}
           <div

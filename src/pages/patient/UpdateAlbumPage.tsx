@@ -105,6 +105,20 @@ const UpdateAlbumPage: FC = () => {
     updateAlbumDataHandler();
   };
 
+  const getCalcAge = (birthdate: string) => {
+    const today = new Date();
+    const birthdateObj = new Date(birthdate);
+    let age = today.getFullYear() - birthdateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthdateObj.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthdateObj.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  };
+
   return (
     <div className="relative">
       <div className="h-screen overflow-y-auto">
@@ -137,7 +151,8 @@ const UpdateAlbumPage: FC = () => {
                 )
               </div>
               <div className="pl-3">
-                {context ? (context.age ? context.age : context_extra.age) : ""}
+                {/* {context ? (context.age ? context.age : context_extra.age) : ""} */}
+                {context ? (context.birthday ? getCalcAge(context.birthday) : getCalcAge(context_extra.birthday)) : ""}
                 歲
               </div>
             </div>

@@ -116,9 +116,9 @@ const CheckPatient: FC = () => {
           setPatientHistory(data.data);
           setOriginPatientHistory(data.data);
           // show present illness
-          if (new Date(data.data[data.data.length-1].date).toISOString().substring(0, 10) == new Date().toISOString().substring(0, 10))
-            setPresentIllness(data.data[data.data.length-1].detail);
-          }
+          // if (new Date(data.data[data.data.length-1].date).toISOString().substring(0, 10) == new Date().toISOString().substring(0, 10))
+          //   setPresentIllness(data.data[data.data.length-1].detail);
+        }
       })
       .catch((error) => {
         console.error(error);

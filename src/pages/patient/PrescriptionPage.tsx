@@ -43,7 +43,7 @@ const PrescriptionPage: FC = () => {
   const [curDiagnosis, setCurDiagnosis] = useState("");
   const [curToll, setCurToll] = useState(0);
   const [curDoctorID, setCurDoctorID] = useState("");
-  const [curPrescription, setCurPrescription] = useState("");
+  const [curPrescription, setCurPrescription] = useState("於 日/月/年(上/下午) 於本診所就診，予病假由日/月/年至日/月/年，共x日。");
 
   const getPrescriptionData = async () => {
     const cardid = context.cardid;
@@ -64,7 +64,7 @@ const PrescriptionPage: FC = () => {
           setCurName(temp.name);
           setCurDiagnosis(temp.diagnosis);
           setCurDoctorID(temp.doctorid);
-          setCurPrescription(temp.prescription ? temp.prescription : "");
+          setCurPrescription(temp.prescription ? temp.prescription : "於 日/月/年(上/下午) 於本診所就診，予病假由日/月/年至日/月/年，共x日。");
         }
       })
       .catch((error) => {
