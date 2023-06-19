@@ -14,9 +14,12 @@
     "@types/react-datepicker": "^4.11.2",
     "@types/react-dom": "^18.0.6",
     "browser-image-compression": "^2.0.2",
+    "html-pdf": "^3.0.1",
     "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
+    "puppeteer": "^20.7.2",
     "rc-time-picker": "^3.7.3",
     "react": "^18.2.0",
     "react-datepicker": "^4.11.0",
@@ -48,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "@types/html-pdf": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",

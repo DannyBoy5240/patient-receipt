@@ -79,10 +79,6 @@ const PatientDetailPage: FC = () => {
     return formattedDate;
   };
 
-  const printHandler = () => {
-    window.print();
-  };
-
   return (
     <div className="relative">
       <div className="h-screen overflow-y-auto">
@@ -183,17 +179,6 @@ const PatientDetailPage: FC = () => {
                           View
                         </span>
                       </div>
-                      {/* <div
-                        className="grow"
-                        onClick={() =>
-                          console.log("Share on Email and Whatspp!")
-                        }
-                      >
-                        <img src={shareIcon} className="max-w-none" />
-                      </div>
-                      <div className="grow" onClick={() => printHandler()}>
-                        <img src={printIcon} className="max-w-none" />
-                      </div> */}
                     </div>
                   </div>
                 ))}

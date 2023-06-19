@@ -2,6 +2,9 @@ import { FC, useState, useEffect } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
+import html2canvas from 'html2canvas';
+import jsPDF from "jspdf";
+
 import Theme from "../../assets/color";
 import { BACKEND_URL } from "../../constants";
 
@@ -132,7 +135,44 @@ const PrescriptionPage: FC = () => {
   };
 
   const printHandler = () => {
-    window.print();
+    // window.print();
+    const element = document.getElementById('prescription');
+    if (!element) return;
+
+    html2canvas(element).then((canvas) => {
+      // Convert the canvas to a data URL representing the captured screenshot
+      const screenshotDataUrl = canvas.toDataURL("image/jpeg");
+
+      // Create a new jsPDF instance
+      const pdf = new jsPDF();
+
+      // Calculate the dimensions of the PDF page based on the captured screenshot
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const aspectRatio = canvas.width / canvas.height;
+      let imgWidth = pageWidth;
+      let imgHeight = imgWidth / aspectRatio;
+
+      let marginLeft = 0;
+      const marginTop = 0;
+
+      // Adjust the dimensions if the captured screenshot is taller than the PDF page
+      if (imgHeight > pageHeight) {
+        imgHeight = pageHeight;
+        imgWidth = imgHeight * aspectRatio;
+        marginLeft = (pageWidth - imgWidth) / 2;
+      }
+
+      // Add the captured screenshot image to the PDF
+      pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
+
+      // File name generate
+      const currentDate = new Date().toISOString().slice(0, 10);
+      const fileName = `prescription_${curName}_${currentDate}.pdf`;
+
+      // Save the PDF file
+      pdf.save(fileName);
+    });
   };
 
   return (
@@ -147,107 +187,109 @@ const PrescriptionPage: FC = () => {
             (!isEditMode ? "mb-[80px]" : "mb-[160px]")
           }
         >
-          {/* Title */}
-          <div className="text-center">
-            <div
-              className="font-bold font-sans text-5xl"
-              style={{ color: Theme.COLOR_DEFAULT }}
-            >
-              {companyInfo.logo}
+          <div id="prescription">
+            {/* Title */}
+            <div className="text-center">
+              <div
+                className="font-bold font-sans text-5xl"
+                style={{ color: Theme.COLOR_DEFAULT }}
+              >
+                {companyInfo.logo}
+              </div>
+              <div
+                className="font-bold text-lg pt-5"
+                style={{ color: Theme.COLOR_DEFAULT }}
+              >
+                <span className="border-b border-b-[#64B3EC]">到診證明書</span>
+              </div>
             </div>
-            <div
-              className="font-bold text-lg pt-5"
-              style={{ color: Theme.COLOR_DEFAULT }}
-            >
-              <span className="border-b border-b-[#64B3EC]">到診證明書</span>
-            </div>
-          </div>
-          {/* User Info */}
-          <div>
-            <div className="text-sm p-2 mt-3 pb-5 border-b border-b-[#64B3EC]">
-              <div className="py-1">
-                <span style={{ color: Theme.COLOR_DEFAULT }}>診症日期:</span>
-                <span className="pl-2 text-black text-opacity-60">
-                  <input
-                    type="text"
-                    className="focus:outline-none"
-                    value={curDate}
-                    onChange={(ev) => setCurDate(ev.target.value)}
-                    readOnly={!isEditMode}
-                  />
-                </span>
-              </div>
-              <div className="py-1">
-                <span style={{ color: Theme.COLOR_DEFAULT }}>病人姓名:</span>
-                <span className="pl-2 text-black text-opacity-60">
-                  <input
-                    type="text"
-                    className="focus:outline-none"
-                    value={curName}
-                    onChange={(ev) => setCurName(ev.target.value)}
-                    readOnly={!isEditMode}
-                  />
-                </span>
-              </div>
-              <div className="py-1">
-                <span style={{ color: Theme.COLOR_DEFAULT }}>診斷:</span>
-                <span className="pl-2 text-black text-opacity-60">
-                  <input
-                    type="text"
-                    className="focus:outline-none"
-                    value={curDiagnosis}
-                    onChange={(ev) => setCurDiagnosis(ev.target.value)}
-                    readOnly={!isEditMode}
-                  />
-                </span>
-              </div>
-              {/* Diagnosis */}
-              <div style={{ color: Theme.COLOR_DEFAULT }}>
-                <div className="grow py-4">
-                  <textarea
-                    className={
-                      "w-full h-40 p-2 border-[#64B3EC] resize-none rounded-md focus:outline-none " +
-                      (isEditMode ? "border" : "border-none")
-                    }
-                    style={{ color: Theme.COLOR_GRAY }}
-                    readOnly={!isEditMode}
-                    value={curPrescription}
-                    onChange={(ev) => setCurPrescription(ev.target.value)}
-                  />
+            {/* User Info */}
+            <div>
+              <div className="text-sm p-2 mt-3 pb-5 border-b border-b-[#64B3EC]">
+                <div className="py-1">
+                  <span style={{ color: Theme.COLOR_DEFAULT }}>診症日期:</span>
+                  <span className="pl-2 text-black text-opacity-60">
+                    <input
+                      type="text"
+                      className="focus:outline-none"
+                      value={curDate}
+                      onChange={(ev) => setCurDate(ev.target.value)}
+                      readOnly={!isEditMode}
+                    />
+                  </span>
                 </div>
-                <div className="h-32">醫師簽名：</div>
+                <div className="py-1">
+                  <span style={{ color: Theme.COLOR_DEFAULT }}>病人姓名:</span>
+                  <span className="pl-2 text-black text-opacity-60">
+                    <input
+                      type="text"
+                      className="focus:outline-none"
+                      value={curName}
+                      onChange={(ev) => setCurName(ev.target.value)}
+                      readOnly={!isEditMode}
+                    />
+                  </span>
+                </div>
+                <div className="py-1">
+                  <span style={{ color: Theme.COLOR_DEFAULT }}>診斷:</span>
+                  <span className="pl-2 text-black text-opacity-60">
+                    <input
+                      type="text"
+                      className="focus:outline-none"
+                      value={curDiagnosis}
+                      onChange={(ev) => setCurDiagnosis(ev.target.value)}
+                      readOnly={!isEditMode}
+                    />
+                  </span>
+                </div>
+                {/* Diagnosis */}
+                <div style={{ color: Theme.COLOR_DEFAULT }}>
+                  <div className="grow py-4">
+                    <textarea
+                      className={
+                        "w-full h-40 p-2 border-[#64B3EC] resize-none rounded-md focus:outline-none " +
+                        (isEditMode ? "border" : "border-none")
+                      }
+                      style={{ color: Theme.COLOR_GRAY }}
+                      readOnly={!isEditMode}
+                      value={curPrescription}
+                      onChange={(ev) => setCurPrescription(ev.target.value)}
+                    />
+                  </div>
+                  <div className="h-32">醫師簽名：</div>
+                </div>
+                <div className="py-1 text-black text-opacity-60">
+                  <span>醫師編號:</span>
+                  <span className="pl-2">
+                    <input
+                      type="text"
+                      className="focus:outline-none"
+                      value={curDoctorID}
+                      onChange={(ev) => setCurDoctorID(ev.target.value)}
+                      readOnly={!isEditMode}
+                    />
+                  </span>
+                </div>
+                {/* <div className="py-1 text-black text-opacity-60">
+                  <span style={{ color: Theme.COLOR_DEFAULT }}>簽發日期:</span>
+                  <span className="pl-2 text-black text-opacity-60">
+                    <input
+                      type="text"
+                      className="focus:outline-none"
+                      value={curDate}
+                      onChange={(ev) => setCurDate(ev.target.value)}
+                      readOnly={!isEditMode}
+                    />
+                  </span>
+                </div> */}
               </div>
-              <div className="py-1 text-black text-opacity-60">
-                <span>醫師編號:</span>
-                <span className="pl-2">
-                  <input
-                    type="text"
-                    className="focus:outline-none"
-                    value={curDoctorID}
-                    onChange={(ev) => setCurDoctorID(ev.target.value)}
-                    readOnly={!isEditMode}
-                  />
-                </span>
+              <div
+                className="p-3 text-xs flex justify-between"
+                style={{ color: Theme.COLOR_DEFAULT }}
+              >
+                <div>地址: {companyInfo.address}</div>
+                <div>電話: {companyInfo.tel}</div>
               </div>
-              {/* <div className="py-1 text-black text-opacity-60">
-                <span style={{ color: Theme.COLOR_DEFAULT }}>簽發日期:</span>
-                <span className="pl-2 text-black text-opacity-60">
-                  <input
-                    type="text"
-                    className="focus:outline-none"
-                    value={curDate}
-                    onChange={(ev) => setCurDate(ev.target.value)}
-                    readOnly={!isEditMode}
-                  />
-                </span>
-              </div> */}
-            </div>
-            <div
-              className="p-3 text-xs flex justify-between"
-              style={{ color: Theme.COLOR_DEFAULT }}
-            >
-              <div>地址: {companyInfo.address}</div>
-              <div>電話: {companyInfo.tel}</div>
             </div>
           </div>
           {/* Assistant Tools */}

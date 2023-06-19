@@ -118,94 +118,103 @@ const PatientRecordPage: FC = () => {
               </div>
               <div className="pl-3">{_context ? getCalcAge(_context.birthday) : ""}歲</div>
             </div>
-            {isSearched ? (
-              <div className="text-sm text-[#25617B] text-opacity-80">
-                {
-                  ptCardList.filter((idx: any) =>
-                    idx.detail.includes(searchTerm)
-                  ).length
-                }{" "}
-                項搜尋結果
-              </div>
-            ) : (
-              <div className="text-sm text-[#0C2036] text-opacity-80">
-                {ptCardList && ptCardList.length > 0
-                  ? getOnlyDate1((ptCardList[currentSelected] as any).date)
-                  : ""}
-              </div>
-            )}
+            {
+              ptCardList && ptCardList.length > 0 ?
+                isSearched ? (
+                  <div className="text-sm text-[#25617B] text-opacity-80">
+                    {
+                      ptCardList.filter((idx: any) =>
+                        idx.detail.includes(searchTerm)
+                      ).length
+                    }{" "}
+                    項搜尋結果
+                  </div>
+                ) : (
+                  <div className="text-sm text-[#0C2036] text-opacity-80">
+                    {ptCardList && ptCardList.length > 0
+                      ? getOnlyDate1((ptCardList[currentSelected] as any).date)
+                      : ""}
+                  </div>
+                )
+              : <></>
+            }
           </div>
           {/* Content */}
-          {!isSearched ? (
-            // Searchable ...
-            <div
-              className="text-xs pt-8 px-3 flex justify-between"
-              style={{ color: Theme.COLOR_DEFAULT }}
-            >
-              {currentSelected > 0 ? (
+          {
+            ptCardList && ptCardList.length > 0 ?
+              !isSearched ? (
+                // Searchable ...
                 <div
-                  className="px-2 flex items-center justify-left"
-                  onClick={() =>
-                    setCurrentSelected(
-                      currentSelected > 0 ? currentSelected - 1 : 0
-                    )
-                  }
+                  className="text-xs pt-8 px-3 flex justify-between"
+                  style={{ color: Theme.COLOR_DEFAULT }}
                 >
-                  <img src={prevvIcon} className="max-w-none" />
-                </div>
-              ) : (
-                <div className="w-7"></div>
-              )}
-              <div className="grow border border-[#64B3EC] p-2" style={{ overflowWrap: "break-word" }}>
-                {ptCardList && ptCardList.length > 0
-                  ? (ptCardList[currentSelected] as any).detail != "" ? (ptCardList[currentSelected] as any).detail : "NO CONTENT! "
-                  : ""}
-              </div>
-              {currentSelected < ptCardList.length - 1 ? (
-                <div
-                  className="px-2 flex items-center justify-right"
-                  onClick={() =>
-                    setCurrentSelected(
-                      currentSelected < ptCardList.length - 1
-                        ? currentSelected + 1
-                        : ptCardList.length - 1
-                    )
-                  }
-                >
-                  <img src={nexttIcon} className="max-w-none" />
-                </div>
-              ) : (
-                <div className="w-7"></div>
-              )}
-            </div>
-          ) : (
-            // Searched Result Boxes
-            <div className="w-full p-4">
-              <div className="relative hover:cursor-pointer text-[#0C2036] text-opacity-80">
-                {ptCardList
-                  .filter((idx: any) => idx.detail.includes(searchTerm))
-                  .map((idx: any, kkk: any) => (
+                  {currentSelected > 0 ? (
                     <div
-                      className="absolute p-4 rounded-xl border border-[#D3E7F6] shadow-lg bg-white w-full"
-                      key={idx.date + kkk}
-                      style={{ top: kkk * 75 + 20, zIndex: kkk }}
-                      onClick={() => showCurrentSearchSelectedHandle(idx, kkk)}
+                      className="px-2 flex items-center justify-left"
+                      onClick={() =>
+                        setCurrentSelected(
+                          currentSelected > 0 ? currentSelected - 1 : 0
+                        )
+                      }
                     >
-                      <div>
-                        診症日期：
-                        <span className="px-1">{getOnlyDate1(idx.date)}</span>
-                      </div>
-                      <div
-                        className="p-3"
-                        style={{ width: "100%", overflowWrap: "break-word" }}
-                      >
-                        {idx.detail}
-                      </div>
+                      <img src={prevvIcon} className="max-w-none" />
                     </div>
-                  ))}
-              </div>
-            </div>
-          )}
+                  ) : (
+                    <div className="w-7"></div>
+                  )}
+                  <div className="grow p-2" style={{ overflowWrap: "break-word" }}>
+                    {ptCardList && ptCardList.length > 0
+                      ? (ptCardList[currentSelected] as any).detail
+                      : ""}
+                  </div>
+                  {currentSelected < ptCardList.length - 1 ? (
+                    <div
+                      className="px-2 flex items-center justify-right"
+                      onClick={() =>
+                        setCurrentSelected(
+                          currentSelected < ptCardList.length - 1
+                            ? currentSelected + 1
+                            : ptCardList.length - 1
+                        )
+                      }
+                    >
+                      <img src={nexttIcon} className="max-w-none" />
+                    </div>
+                  ) : (
+                    <div className="w-7"></div>
+                  )}
+                </div>
+              ) : (
+                // Searched Result Boxes
+                <div className="w-full p-4">
+                  <div className="relative hover:cursor-pointer text-[#0C2036] text-opacity-80">
+                    {ptCardList
+                      .filter((idx: any) => idx.detail.includes(searchTerm))
+                      .map((idx: any, kkk: any) => (
+                        <div
+                          className="absolute p-4 rounded-xl border border-[#D3E7F6] shadow-lg bg-white w-full"
+                          key={idx.date + kkk}
+                          style={{ top: kkk * 75 + 20, zIndex: kkk }}
+                          onClick={() => showCurrentSearchSelectedHandle(idx, kkk)}
+                        >
+                          <div>
+                            診症日期：
+                            <span className="px-1">{getOnlyDate1(idx.date)}</span>
+                          </div>
+                          <div
+                            className="p-3"
+                            style={{ width: "100%", overflowWrap: "break-word" }}
+                          >
+                            {idx.detail}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )
+            : <div className="p-2 text-[#64B3EC]">No records exist!</div>
+          }
+          
         </div>
       </div>
       {/* Search Box */}

@@ -925,7 +925,7 @@ const CheckPatient: FC = () => {
                       onClick={() => {
                         setStoreMedicineInfo((prevState) => [
                           ...prevState,
-                          { name: "XXX", amount: 0 },
+                          { name: "", amount: 0 },
                         ]);
                       }}
                     >

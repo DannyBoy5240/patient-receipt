@@ -3,6 +3,7 @@ import { FC, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import html2canvas from 'html2canvas';
+import jsPDF from "jspdf";
 
 import Theme from "../../assets/color";
 import { BACKEND_URL } from "../../constants";
@@ -140,7 +141,46 @@ const RecipePage: FC = () => {
   };
 
   const printHandler = () => {
-    window.print();
+    
+    // window.print();
+
+    const element = document.getElementById('recipe');
+    if (!element) return;
+
+    html2canvas(element).then((canvas) => {
+      // Convert the canvas to a data URL representing the captured screenshot
+      const screenshotDataUrl = canvas.toDataURL("image/jpeg");
+
+      // Create a new jsPDF instance
+      const pdf = new jsPDF();
+
+      // Calculate the dimensions of the PDF page based on the captured screenshot
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const aspectRatio = canvas.width / canvas.height;
+      let imgWidth = pageWidth;
+      let imgHeight = imgWidth / aspectRatio;
+
+      let marginLeft = 0;
+      const marginTop = 0;
+
+      // Adjust the dimensions if the captured screenshot is taller than the PDF page
+      if (imgHeight > pageHeight) {
+        imgHeight = pageHeight;
+        imgWidth = imgHeight * aspectRatio;
+        marginLeft = (pageWidth - imgWidth) / 2;
+      }
+
+      // Add the captured screenshot image to the PDF
+      pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
+
+      // File name generate
+      const currentDate = new Date().toISOString().slice(0, 10);
+      const fileName = `prescription_${curName}_${currentDate}.pdf`;
+
+      // Save the PDF file
+      pdf.save(fileName);
+    });
   };
 
   const [isOpenShare, setIsOpenShare] = useState(false);
@@ -195,7 +235,7 @@ const RecipePage: FC = () => {
         {/* Header */}
         <Header title="到診證明書" />
         {/* Main Page */}
-        <div className="m-4 p-3 rounded-lg shadow-lg bg-white">
+        <div className="m-4 p-3 rounded-lg shadow-lg bg-white" id="recipe">
           {/* Title */}
           <div className="text-center">
             <div
@@ -228,15 +268,15 @@ const RecipePage: FC = () => {
               </div>
               <div className="py-1">
                 <div style={{ color: Theme.COLOR_DEFAULT }}>診斷: <span className="pl-1">{curDiagnosis}</span></div>
-                <div className="p-2 h-48 text-black text-xs">
+                <div className="px-2 pt-4 pb-2 h-48 text-black text-xs">
                   <table className="table w-11/12 mx-auto border-collapse border border-black">
                     <tbody>
                       {chunkMedicines.map((chunk, i) => (
-                        <tr key={i}>
+                        <tr key={i} className="align-middle">
                           {chunk.map((medicine, j) => (
                             <td
                               key={j}
-                              className="border border-black p-1 text-center w-1/3"
+                              className="border border-black p-2 text-center w-1/3"
                             >
                               {medicine.name} {medicine.amount}g
                             </td>

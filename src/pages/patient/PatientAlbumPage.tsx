@@ -161,103 +161,49 @@ const PatientAlbumPage: FC = () => {
                 (lst: any) =>
                   new Date().getTime() > new Date(lst.date).getTime()
               )
-              .map((idx: any, kkk: any) => (
-                <div className="relative py-2" key={"ptcardlist" + kkk}>
-                  <div className="text-[#64B3EC] text-sm font-bold py-1">
-                    {getOnlyDate1(idx.date)}
-                  </div>
-                  {/* {kkk != 0 ? (
+              .map((idx: any, kkk: any) =>
+                idx.album && idx.album.split(", ").length > 0 ? (
+                  <div className="relative py-2" key={"ptcardlist" + kkk}>
                     <div className="text-[#64B3EC] text-sm font-bold py-1">
                       {getOnlyDate1(idx.date)}
                     </div>
-                  ) : (
-                    <></>
-                  )} */}
-                  <div className="text-[#276D36] px-2">{idx.albumtext}</div>
-                  <div className="flex flex-row pt-2 justify-between">
-                    {idx.album ? (
-                      <div className="flex flex-row overflow-x-auto">
-                        {idx.album.split(", ").map((idxx: any, kkkk: any) =>
-                          kkkk != 0 ? (
-                            <div
-                              className="px-2"
-                              onClick={() => {
-                                console.log("--->", idx);
-                                navigate("/editalbum", {
-                                  state: {
-                                    context: idx,
-                                    context_extra: context,
-                                  },
-                                });
-                              }}
-                              key={"kkkk" + kkkk}
-                            >
-                              <img
-                                src={BACKEND_URL + "/uploads/" + idxx}
-                                className="h-24 max-w-none"
-                              />
-                            </div>
-                          ) : (
-                            <div key={"kkkk" + kkkk}></div>
-                          )
-                        )}
-                      </div>
-                    ) : (
-                      <div className="flex flex-row">
-                        <div className="px-2">
-                          <img src={BlankImage} className="max-w-none" />
-                        </div>
-                        <div className="px-2">
-                          <img src={BlankImage} className="max-w-none" />
-                        </div>
-                      </div>
-                    )}
-                    {/* {kkk == 0 ? (
-                      <div className="flex flex-row items-end">
-                        <div className="px-1 pb-1">
-                          <img src={uploadIcon} className="max-w-none" />
-                        </div>
-                        <div
-                          className="px-1"
-                          onClick={() => captureCameraImageHandler()}
-                        >
-                          {error && <p>{error}</p>}
-
-                          <img src={cameraIcon} className="max-w-none" />
-                          {isCapturing ? (
-                            <div>
-                              <video ref={videoRef} autoPlay></video>
-                              <canvas ref={canvasRef}></canvas>
-                            </div>
-                          ) : (
-                            <></>
+                    <div className="text-[#276D36] px-2">{idx.albumtext}</div>
+                    <div className="flex flex-row pt-2 justify-between">
+                      {idx.album ? (
+                        <div className="flex flex-row overflow-x-auto">
+                          {idx.album.split(", ").map((idxx: any, kkkk: any) =>
+                            kkkk !== 0 ? (
+                              <div
+                                className="px-2"
+                                onClick={() => {
+                                  navigate("/editalbum", {
+                                    state: {
+                                      context: idx,
+                                      context_extra: context,
+                                    },
+                                  });
+                                }}
+                                key={"kkkk" + kkkk}
+                              >
+                                <img
+                                  src={BACKEND_URL + "/uploads/" + idxx}
+                                  className="h-24 max-w-none"
+                                />
+                              </div>
+                            ) : (
+                              <div key={"kkkk" + kkkk}></div>
+                            )
                           )}
                         </div>
-                      </div>
-                    ) : (
-                      <></>
-                    )} */}
-                  </div>
-                  {/* {kkk == 0 ? (
-                    <div
-                      className="absolute top-2 right-1"
-                      onClick={() => {
-                        console.log("navigate!", patientCardList[kkk]);
-                        // navigate("/editalbum", {
-                        //   state: {
-                        //     context: context,
-                        //     album: patientCardList ? patientCardList[0] : null,
-                        //   },
-                        // })
-                      }}
-                    >
-                      <img src={editIcon} className="max-w-none" />
+                      ) : (
+                        <></>
+                      )}
                     </div>
-                  ) : (
-                    <></>
-                  )} */}
-                </div>
-              ))}
+                  </div>
+                ) : (
+                  <></>
+                )
+              )}
           </div>
         </div>
         {/* NavBar */}
