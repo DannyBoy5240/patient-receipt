@@ -51,7 +51,7 @@ const Home: FC = () => {
         console.log("homedata -> ", data.data);
         const filteredData = data.data.filter((item: any) => {
           const itemDate = new Date(item.date);
-          return item.checked == 0 && itemDate > new Date() && itemDate.getDate() === new Date().getDate() &&
+          return item.checked == 0 && itemDate.getDate() === new Date().getDate() &&
                  itemDate.getMonth() === new Date().getMonth() &&
                  itemDate.getFullYear() === new Date().getFullYear();
         });
