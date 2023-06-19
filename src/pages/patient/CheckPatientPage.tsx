@@ -525,6 +525,7 @@ const CheckPatient: FC = () => {
                           setContext((prevContext: any) => ({
                             ...prevContext,
                             pasthistory: curPastHistory,
+                            // pasthistorydate: new Date().toString(),
                             pasthistorydate: 
                               getOnlyDate2(new Date().toString()),
                           }));

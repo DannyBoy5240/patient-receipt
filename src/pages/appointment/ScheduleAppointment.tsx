@@ -39,8 +39,7 @@ const ScheduleAppointment = () => {
         minute: '2-digit',
         hour12: false,
       })
-    : moment().format('HH:mm'));
-  
+    : moment().format('HH:mm'));  
 
   useEffect(() => {
     if (context) {
@@ -102,7 +101,7 @@ const ScheduleAppointment = () => {
     const doctorName = _user.username;
     if (!context || context.legnth == 0)  return;
     const patientID = context[recordEnabledIdx].patientid;
-    const dateTime = formatDate(selectedDate) + " " + selectedTime;
+    const dateTime = new Date(formatDate(selectedDate) + " " + selectedTime);
 
     if (contextDate) {
       // update appointment to backend database

@@ -36,9 +36,10 @@ const PatientList: FC = () => {
   };
 
   const getSchedulePatientCards = async (user: any, viewDate: any) => {
+    console.log("viewDate -> ", viewDate);
     const doctorID = user.doctorid;
     // fetch scheduled cards of selected date
-    const data = { doctorID, viewDate };
+    const data = { doctorID };
     await fetch(BACKEND_URL + "/getptcardsbydate", {
       method: "POST",
       headers: {
@@ -49,7 +50,14 @@ const PatientList: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("cardarray -> ", data.data);
-        setCardsArray(data.data);
+        const filteredData = data.data.filter((item: any) => {
+          const itemDate = new Date(item.date);
+          return item.checked == 0 && viewDate && viewDate.split("-").length > 0 && 
+                 itemDate.getDate() == viewDate.split("-")[2] &&
+                 (itemDate.getMonth()+1) == parseInt(viewDate.split("-")[1]) &&
+                 itemDate.getFullYear() == viewDate.split("-")[0];
+        });
+        setCardsArray(filteredData);
       })
       .catch((error) => {
         console.error(error);
