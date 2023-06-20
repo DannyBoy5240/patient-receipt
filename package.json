@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
+    "react-to-print": "^2.14.13",
     "stream": "^0.0.2",
     "styled-components": "^5.3.10",
     "typescript": "^4.8.4",

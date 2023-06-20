@@ -139,40 +139,43 @@ const PrescriptionPage: FC = () => {
     const element = document.getElementById('prescription');
     if (!element) return;
 
-    html2canvas(element).then((canvas) => {
-      // Convert the canvas to a data URL representing the captured screenshot
-      const screenshotDataUrl = canvas.toDataURL("image/jpeg");
+    setTimeout(() => {
+      html2canvas(element, { scale: 3 }).then((canvas) => {
+        // Convert the canvas to a data URL representing the captured screenshot
+        const screenshotDataUrl = canvas.toDataURL("image/jpeg");
+  
+        // Create a new jsPDF instance
+        const pdf = new jsPDF();
+  
+        // Calculate the dimensions of the PDF page based on the captured screenshot
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const aspectRatio = canvas.width / canvas.height;
+        let imgWidth = pageWidth - 20;
+        let imgHeight = imgWidth / aspectRatio;
+  
+        let marginLeft = 10;
+  
+        // Adjust the dimensions if the captured screenshot is taller than the PDF page
+        if (imgHeight > pageHeight) {
+          imgHeight = pageHeight - 20;
+          imgWidth = imgHeight * aspectRatio;
+          marginLeft = (pageWidth - imgWidth) / 2 + 10;
+        }
 
-      // Create a new jsPDF instance
-      const pdf = new jsPDF();
-
-      // Calculate the dimensions of the PDF page based on the captured screenshot
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const aspectRatio = canvas.width / canvas.height;
-      let imgWidth = pageWidth;
-      let imgHeight = imgWidth / aspectRatio;
-
-      let marginLeft = 0;
-      const marginTop = 0;
-
-      // Adjust the dimensions if the captured screenshot is taller than the PDF page
-      if (imgHeight > pageHeight) {
-        imgHeight = pageHeight;
-        imgWidth = imgHeight * aspectRatio;
-        marginLeft = (pageWidth - imgWidth) / 2;
-      }
-
-      // Add the captured screenshot image to the PDF
-      pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
-
-      // File name generate
-      const currentDate = new Date().toISOString().slice(0, 10);
-      const fileName = `prescription_${curName}_${currentDate}.pdf`;
-
-      // Save the PDF file
-      pdf.save(fileName);
-    });
+        const marginTop = 10;
+  
+        // Add the captured screenshot image to the PDF
+        pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
+  
+        // File name generate
+        const currentDate = new Date().toISOString().slice(0, 10);
+        const fileName = `prescription_${curName}_${currentDate}.pdf`;
+  
+        // Save the PDF file
+        pdf.save(fileName);
+      });
+    }, 500); // Adjust the delay time as needed
   };
 
   return (
@@ -212,6 +215,7 @@ const PrescriptionPage: FC = () => {
                     <input
                       type="text"
                       className="focus:outline-none"
+                      style={{lineHeight: "2", verticalAlign: "middle"}}
                       value={curDate}
                       onChange={(ev) => setCurDate(ev.target.value)}
                       readOnly={!isEditMode}
@@ -224,6 +228,7 @@ const PrescriptionPage: FC = () => {
                     <input
                       type="text"
                       className="focus:outline-none"
+                      style={{lineHeight: "2", verticalAlign: "middle"}}
                       value={curName}
                       onChange={(ev) => setCurName(ev.target.value)}
                       readOnly={!isEditMode}
@@ -236,6 +241,7 @@ const PrescriptionPage: FC = () => {
                     <input
                       type="text"
                       className="focus:outline-none"
+                      style={{lineHeight: "2", verticalAlign: "middle"}}
                       value={curDiagnosis}
                       onChange={(ev) => setCurDiagnosis(ev.target.value)}
                       readOnly={!isEditMode}
@@ -245,16 +251,25 @@ const PrescriptionPage: FC = () => {
                 {/* Diagnosis */}
                 <div style={{ color: Theme.COLOR_DEFAULT }}>
                   <div className="grow py-4">
-                    <textarea
-                      className={
-                        "w-full h-40 p-2 border-[#64B3EC] resize-none rounded-md focus:outline-none " +
-                        (isEditMode ? "border" : "border-none")
-                      }
-                      style={{ color: Theme.COLOR_GRAY }}
-                      readOnly={!isEditMode}
-                      value={curPrescription}
-                      onChange={(ev) => setCurPrescription(ev.target.value)}
-                    />
+                    {
+                      isEditMode ?
+                        <textarea
+                          className={
+                            "w-full h-40 p-2 border-[#64B3EC] resize-none rounded-md focus:outline-none " +
+                            (isEditMode ? "border" : "border-none")
+                          }
+                          style={{ color: Theme.COLOR_GRAY }}
+                          value={curPrescription}
+                          onChange={(ev) => setCurPrescription(ev.target.value)}
+                        />
+                      :
+                        <div 
+                          className="w-full h-40 p-2 border-[#64B3EC] rounded-md" 
+                          style={{ color: Theme.COLOR_GRAY, resize: "vertical", overflowWrap: "break-word", whiteSpace: "pre-line" }}
+                        >
+                          {curPrescription}
+                        </div>
+                    }
                   </div>
                   <div className="h-32">醫師簽名：</div>
                 </div>
@@ -264,6 +279,7 @@ const PrescriptionPage: FC = () => {
                     <input
                       type="text"
                       className="focus:outline-none"
+                      style={{lineHeight: "2", verticalAlign: "middle"}}
                       value={curDoctorID}
                       onChange={(ev) => setCurDoctorID(ev.target.value)}
                       readOnly={!isEditMode}

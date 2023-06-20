@@ -147,84 +147,43 @@ const RecipePage: FC = () => {
     const element = document.getElementById('recipe');
     if (!element) return;
 
-    try {
+    setTimeout(() => {
+      html2canvas(element, { scale: 3 }).then((canvas) => {
+        // Convert the canvas to a data URL representing the captured screenshot
+        const screenshotDataUrl = canvas.toDataURL("image/jpeg");
+  
+        // Create a new jsPDF instance
+        const pdf = new jsPDF();
+  
+        // Calculate the dimensions of the PDF page based on the captured screenshot
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const aspectRatio = canvas.width / canvas.height;
+        let imgWidth = pageWidth - 20;
+        let imgHeight = imgWidth / aspectRatio;
+  
+        let marginLeft = 10;
+  
+        // Adjust the dimensions if the captured screenshot is taller than the PDF page
+        if (imgHeight > pageHeight) {
+          imgHeight = pageHeight - 20;
+          imgWidth = imgHeight * aspectRatio;
+          marginLeft = (pageWidth - imgWidth) / 2 + 10;
+        }
 
-      const canvas = await html2canvas(element);
-
-      // Convert canvas to Blob
-      const imageBlob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve));
-
-      if (imageBlob) {
-
-        const recipientEmail = 'dannyboy05240@gmail.com';
-        const subject = 'Captured Page';
-      
-        const formData = new FormData();
-        formData.append('attachment', imageBlob, 'captured_page.png');
-      
-        // Construct the mailto link with the attachment
-        const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}`;
-      
-        // Create a hidden anchor element to trigger the mailto link programmatically
-        const anchor = document.createElement('a');
-        anchor.href = mailtoLink;
-        anchor.target = '_blank';
-        anchor.download = 'captured_page.png';
-        anchor.click();
-
-      }
-    } catch (error) {
-      console.error('Error capturing page:', error);
-    }
-
-    // html2canvas(element).then(canvas => {
-    //   // Convert the canvas to a base64 data URL
-    //   const capturedImageURL = canvas.toDataURL('image/png');
-    
-    //   const recipientEmail = 'dannyboy05240@gmail.com';
-    //   const subject = 'Recipe Page';
-
-    //   // Construct the mailto link
-    //   const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(capturedImageURL)}`;
-
-    //   // Open the mailto link in a new window
-    //   window.open(mailtoLink);
-    // });
-
-    // html2canvas(element).then((canvas) => {
-    //   // Convert the canvas to a data URL representing the captured screenshot
-    //   const screenshotDataUrl = canvas.toDataURL("image/jpeg");
-
-    //   // Create a new jsPDF instance
-    //   const pdf = new jsPDF();
-
-    //   // Calculate the dimensions of the PDF page based on the captured screenshot
-    //   const pageWidth = pdf.internal.pageSize.getWidth();
-    //   const pageHeight = pdf.internal.pageSize.getHeight();
-    //   const aspectRatio = canvas.width / canvas.height;
-    //   let imgWidth = pageWidth;
-    //   let imgHeight = imgWidth / aspectRatio;
-
-    //   let marginLeft = 0;
-    //   const marginTop = 0;
-
-    //   // Adjust the dimensions if the captured screenshot is taller than the PDF page
-    //   if (imgHeight > pageHeight) {
-    //     imgHeight = pageHeight;
-    //     imgWidth = imgHeight * aspectRatio;
-    //     marginLeft = (pageWidth - imgWidth) / 2;
-    //   }
-
-    //   // Add the captured screenshot image to the PDF
-    //   pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
-
-    //   // File name generate
-    //   const currentDate = new Date().toISOString().slice(0, 10);
-    //   const fileName = `prescription_${curName}_${currentDate}.pdf`;
-
-    //   // Save the PDF file
-    //   pdf.save(fileName);
-    // });
+        const marginTop = 10;
+  
+        // Add the captured screenshot image to the PDF
+        pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
+  
+        // File name generate
+        const currentDate = new Date().toISOString().slice(0, 10);
+        const fileName = `receipe_${curName}_${currentDate}.pdf`;
+  
+        // Save the PDF file
+        pdf.save(fileName);
+      });
+    }, 500); // Adjust the delay time as needed
   };
 
   const [isOpenShare, setIsOpenShare] = useState(false);
@@ -313,14 +272,15 @@ const RecipePage: FC = () => {
               <div className="py-1">
                 <div style={{ color: Theme.COLOR_DEFAULT }}>診斷: <span className="pl-1">{curDiagnosis}</span></div>
                 <div className="px-2 pt-4 pb-2 h-48 text-black text-xs">
-                  <table className="table w-11/12 mx-auto border-collapse border border-black">
+                  <table className="table w-11/12 mx-auto border-collapse border border-black" style={{lineHeight: "2", verticalAlign: "middle"}}>
                     <tbody>
                       {chunkMedicines.map((chunk, i) => (
                         <tr key={i} className="align-middle">
                           {chunk.map((medicine, j) => (
                             <td
                               key={j}
-                              className="border border-black p-2 text-center w-1/3"
+                              className="border border-black p-1 text-center w-1/3"
+                              style={{lineHeight: "2", verticalAlign: "middle"}}
                             >
                               {medicine.name} {medicine.amount}g
                             </td>
