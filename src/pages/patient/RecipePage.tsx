@@ -140,47 +140,91 @@ const RecipePage: FC = () => {
     return formattedDate;
   };
 
-  const printHandler = () => {
+  const printHandler = async () => {
     
     // window.print();
 
     const element = document.getElementById('recipe');
     if (!element) return;
 
-    html2canvas(element).then((canvas) => {
-      // Convert the canvas to a data URL representing the captured screenshot
-      const screenshotDataUrl = canvas.toDataURL("image/jpeg");
+    try {
 
-      // Create a new jsPDF instance
-      const pdf = new jsPDF();
+      const canvas = await html2canvas(element);
 
-      // Calculate the dimensions of the PDF page based on the captured screenshot
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const aspectRatio = canvas.width / canvas.height;
-      let imgWidth = pageWidth;
-      let imgHeight = imgWidth / aspectRatio;
+      // Convert canvas to Blob
+      const imageBlob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve));
 
-      let marginLeft = 0;
-      const marginTop = 0;
+      if (imageBlob) {
 
-      // Adjust the dimensions if the captured screenshot is taller than the PDF page
-      if (imgHeight > pageHeight) {
-        imgHeight = pageHeight;
-        imgWidth = imgHeight * aspectRatio;
-        marginLeft = (pageWidth - imgWidth) / 2;
+        const recipientEmail = 'dannyboy05240@gmail.com';
+        const subject = 'Captured Page';
+      
+        const formData = new FormData();
+        formData.append('attachment', imageBlob, 'captured_page.png');
+      
+        // Construct the mailto link with the attachment
+        const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}`;
+      
+        // Create a hidden anchor element to trigger the mailto link programmatically
+        const anchor = document.createElement('a');
+        anchor.href = mailtoLink;
+        anchor.target = '_blank';
+        anchor.download = 'captured_page.png';
+        anchor.click();
+
       }
+    } catch (error) {
+      console.error('Error capturing page:', error);
+    }
 
-      // Add the captured screenshot image to the PDF
-      pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
+    // html2canvas(element).then(canvas => {
+    //   // Convert the canvas to a base64 data URL
+    //   const capturedImageURL = canvas.toDataURL('image/png');
+    
+    //   const recipientEmail = 'dannyboy05240@gmail.com';
+    //   const subject = 'Recipe Page';
 
-      // File name generate
-      const currentDate = new Date().toISOString().slice(0, 10);
-      const fileName = `prescription_${curName}_${currentDate}.pdf`;
+    //   // Construct the mailto link
+    //   const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(capturedImageURL)}`;
 
-      // Save the PDF file
-      pdf.save(fileName);
-    });
+    //   // Open the mailto link in a new window
+    //   window.open(mailtoLink);
+    // });
+
+    // html2canvas(element).then((canvas) => {
+    //   // Convert the canvas to a data URL representing the captured screenshot
+    //   const screenshotDataUrl = canvas.toDataURL("image/jpeg");
+
+    //   // Create a new jsPDF instance
+    //   const pdf = new jsPDF();
+
+    //   // Calculate the dimensions of the PDF page based on the captured screenshot
+    //   const pageWidth = pdf.internal.pageSize.getWidth();
+    //   const pageHeight = pdf.internal.pageSize.getHeight();
+    //   const aspectRatio = canvas.width / canvas.height;
+    //   let imgWidth = pageWidth;
+    //   let imgHeight = imgWidth / aspectRatio;
+
+    //   let marginLeft = 0;
+    //   const marginTop = 0;
+
+    //   // Adjust the dimensions if the captured screenshot is taller than the PDF page
+    //   if (imgHeight > pageHeight) {
+    //     imgHeight = pageHeight;
+    //     imgWidth = imgHeight * aspectRatio;
+    //     marginLeft = (pageWidth - imgWidth) / 2;
+    //   }
+
+    //   // Add the captured screenshot image to the PDF
+    //   pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
+
+    //   // File name generate
+    //   const currentDate = new Date().toISOString().slice(0, 10);
+    //   const fileName = `prescription_${curName}_${currentDate}.pdf`;
+
+    //   // Save the PDF file
+    //   pdf.save(fileName);
+    // });
   };
 
   const [isOpenShare, setIsOpenShare] = useState(false);

@@ -136,44 +136,44 @@ const ReceiptPage: FC = () => {
   };
 
   const printHandler = () => {
-    // window.print();
-    const element = document.getElementById('receipt');
-    if (!element) return;
+    window.print();
+    // const element = document.getElementById('receipt');
+    // if (!element) return;
 
-    html2canvas(element).then((canvas) => {
-      // Convert the canvas to a data URL representing the captured screenshot
-      const screenshotDataUrl = canvas.toDataURL("image/jpeg");
+    // html2canvas(element).then((canvas) => {
+    //   // Convert the canvas to a data URL representing the captured screenshot
+    //   const screenshotDataUrl = canvas.toDataURL("image/jpeg");
 
-      // Create a new jsPDF instance
-      const pdf = new jsPDF();
+    //   // Create a new jsPDF instance
+    //   const pdf = new jsPDF();
 
-      // Calculate the dimensions of the PDF page based on the captured screenshot
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const aspectRatio = canvas.width / canvas.height;
-      let imgWidth = pageWidth;
-      let imgHeight = imgWidth / aspectRatio;
+    //   // Calculate the dimensions of the PDF page based on the captured screenshot
+    //   const pageWidth = pdf.internal.pageSize.getWidth();
+    //   const pageHeight = pdf.internal.pageSize.getHeight();
+    //   const aspectRatio = canvas.width / canvas.height;
+    //   let imgWidth = pageWidth;
+    //   let imgHeight = imgWidth / aspectRatio;
 
-      let marginLeft = 0;
-      const marginTop = 0;
+    //   let marginLeft = 0;
+    //   const marginTop = 0;
 
-      // Adjust the dimensions if the captured screenshot is taller than the PDF page
-      if (imgHeight > pageHeight) {
-        imgHeight = pageHeight;
-        imgWidth = imgHeight * aspectRatio;
-        marginLeft = (pageWidth - imgWidth) / 2;
-      }
+    //   // Adjust the dimensions if the captured screenshot is taller than the PDF page
+    //   if (imgHeight > pageHeight) {
+    //     imgHeight = pageHeight;
+    //     imgWidth = imgHeight * aspectRatio;
+    //     marginLeft = (pageWidth - imgWidth) / 2;
+    //   }
 
-      // Add the captured screenshot image to the PDF
-      pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
+    //   // Add the captured screenshot image to the PDF
+    //   pdf.addImage(screenshotDataUrl, "JPEG", marginLeft, marginTop, imgWidth, imgHeight);
 
-      // File name generate
-      const currentDate = new Date().toISOString().slice(0, 10);
-      const fileName = `prescription_${curName}_${currentDate}.pdf`;
+    //   // File name generate
+    //   const currentDate = new Date().toISOString().slice(0, 10);
+    //   const fileName = `prescription_${curName}_${currentDate}.pdf`;
 
-      // Save the PDF file
-      pdf.save(fileName);
-    });
+    //   // Save the PDF file
+    //   pdf.save(fileName);
+    // });
   };
 
   const [isOpenShare, setIsOpenShare] = useState(false);

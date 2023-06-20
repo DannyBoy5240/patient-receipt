@@ -70,29 +70,29 @@ const Signin: FC = () => {
               福氣堂
             </div>
           </div>
-          <div className="grow flex flex-col justify-center">
-            <div className="text-[12px] text-600 text-[#64B3EC]">Email</div>
+          <div className="grow flex flex-col justify-center font-mont">
+            <div className="text-[13px] font-semibold text-[#64B3EC]">Email</div>
             <div className="pt-2">
               <input
-                className="w-full focus:outline-none h-[50px] border border-[#25617B] rounded-[10px] p-2"
+                className="w-full text-[11px] text-black text-opacity-60 font-normal focus:outline-none h-[50px] border border-[#25617B] rounded-[10px] p-2"
                 onChange={(ev: any) => {
                   setCurrentEmail(ev.target.value);
                 }}
               />
             </div>
-            <div className="text-[12px] text-600 text-[#64B3EC] pt-2">
+            <div className="text-[13px] font-semibold text-[#64B3EC] pt-2">
               Password
             </div>
             <div className="pt-2 relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full focus:outline-none h-[50px] border border-[#25617B] rounded-[10px] p-2 pr-10"
+                className="w-full text-[11px] text-black text-opacity-60 font-normal focus:outline-none h-[50px] border border-[#25617B] rounded-[10px] p-2 pr-10"
                 onChange={(ev: any) => {
                   setCurrentPassword(ev.target.value);
                 }}
               />
               <div
-                className="absolute right-3 top-[26px] text-[10px] text-[#25747B] hover:cursor-pointer"
+                className="absolute right-3 top-[26px] text-[10px] text-500 text-[#25747B] hover:cursor-pointer"
                 tabIndex={0}
                 onFocus={() => setShowPassword(true)}
                 onBlur={() => setShowPassword(false)}
@@ -103,15 +103,15 @@ const Signin: FC = () => {
             {/* AUthentication Error message */}
             <div className="py-2 text-[#FF0000] text-xs">{authErrorMsg}</div>
           </div>
-          <div className="grow flex flex-col justify-center">
+          <div className="grow flex flex-col justify-center font-mont">
             <div
-              className="rounded-[10px] bg-[#64B3EC] hover:bg-[#D3E7F6] text-white text-center text-sm p-3"
+              className="rounded-[10px] bg-[#64B3EC] hover:bg-[#D3E7F6] text-white text-center text-sm text-400 p-3"
               onClick={() => loginHandler()}
             >
               Log In
             </div>
             <div
-              className="text-[10px] text-black p-3 text-center hover:bg-[#D3E7F6] rounded-[10px] mt-2"
+              className="text-[10px] font-semibold text-black p-3 text-center hover:bg-[#D3E7F6] rounded-[10px] mt-2"
               onClick={() => navigate("/forgotpassword")}
             >
               Forgot Password

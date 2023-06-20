@@ -141,7 +141,7 @@ const PatientAlbumPage: FC = () => {
                 {context ? context.name : ""} (
                 {context ? (context.sex == 1 ? "男" : "女") : ""})
               </div>
-              <div className="pl-3">{context ? getCalcAge(context.age) : ""} 歲</div>
+              <div className="pl-3">{context ? getCalcAge(context.birthday) : ""} 歲</div>
             </div>
             {/* <div className="text-sm text-[#0C2036] text-opacity-80">
               {context ? getOnlyDate1(context.date) : ""}
@@ -201,7 +201,7 @@ const PatientAlbumPage: FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <></>
+                  <div key={"ptcardlist" + kkk}></div>
                 )
               )}
           </div>

@@ -505,8 +505,8 @@ app.post("/deleteaccount", (req, res) => {
 app.post("/findpatients", (req, res) => {
   const searchtext = req.body.searchText;
 
-  const sql = `SELECT * FROM patients WHERE patientid LIKE ? OR telephone LIKE ?`;
-  const values = [`%${searchtext}%`, `%${searchtext}%`];
+  const sql = `SELECT * FROM patients WHERE patientid LIKE ? OR telephone LIKE ? OR name LIKE ? OR engname LIKE ? `;
+  const values = [`%${searchtext}%`, `%${searchtext}%`, `%${searchtext}%`, `%${searchtext}%`];
 
   // Execute the query
   db.query(sql, values, (err, rows) => {

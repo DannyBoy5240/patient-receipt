@@ -99,6 +99,47 @@ const PatientRecordPage: FC = () => {
     return age;
   };
 
+  const showTextWithSearch = (searchText: string, fullText: string, maxLength: number): string => {
+    // Escape special characters in the search text
+    const escapedSearchText = searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  
+    // Create a regular expression with the escaped search text and case-insensitive flag
+    const regex = new RegExp(`(${escapedSearchText})`, 'gi');
+  
+    // Find the first match index
+    const match = regex.exec(fullText);
+    if (!match) {
+      // If no match is found, return the original fullText
+      return fullText;
+    }
+  
+    const matchIndex = match.index;
+    const matchLength = match[0].length;
+  
+    // Calculate the start and end indices of the substring
+    const startIndex = Math.max(matchIndex - Math.floor(maxLength / 2), 0);
+    const endIndex = Math.min(startIndex + maxLength, fullText.length);
+  
+    // Get the substring centered around the matched text
+    let substring = fullText.substring(startIndex, endIndex);
+  
+    // Highlight the matched text within the substring
+    substring = substring.replace(regex, '<span class="text-red-500">$1</span>');
+  
+    // Add ellipsis if the substring does not start at the beginning of the full text
+    if (startIndex > 0) {
+      substring = `...${substring}`;
+    }
+  
+    // Add ellipsis if the substring does not end at the end of the full text
+    if (endIndex < fullText.length) {
+      substring = `${substring}...`;
+    }
+  
+    // Return the modified substring with HTML tags for highlighting
+    return substring;
+  }
+
   return (
     <div className="relative">
       <div className="relative h-screen overflow-y-auto">
@@ -204,8 +245,8 @@ const PatientRecordPage: FC = () => {
                           <div
                             className="p-3"
                             style={{ width: "100%", overflowWrap: "break-word" }}
+                            dangerouslySetInnerHTML={{ __html: showTextWithSearch(searchTerm, idx.detail, 20) }}
                           >
-                            {idx.detail}
                           </div>
                         </div>
                       ))}
