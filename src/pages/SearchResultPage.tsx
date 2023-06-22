@@ -150,12 +150,52 @@ const SearchResultPage: FC = () => {
                     style={{ top: kkk * 75 + 20, zIndex: kkk }}
                     // onClick={() => showCurrentSearchSelectedHandle(idx, kkk)}
                     onClick={() => {
-                      navigate("/patientdetail", {
-                        state: {
-                          cardid: idx.cardid,
-                          date: idx.date,
-                        },
-                      });
+                      
+                      idx.name && idx.name.toString().includes(_searchText) || idx.engname && idx.engname.toString().includes(_searchText) ||
+                         idx.birthday && idx.birthday.toString().includes(_searchText) || idx.patientid && idx.patientid.toString().includes(_searchText) ||
+                         idx.telephone && idx.telephone.toString().includes(_searchText) || idx.address && idx.address.toString().includes(_searchText) ||
+                         idx.emergency && idx.emergency.toString().includes(_searchText) || idx.emergencynumber && idx.emergencynumber.toString().includes(_searchText) ||
+                         idx.doctorid && idx.doctorid.toString().includes(_searchText) || idx.doctor && idx.doctor.toString().includes(_searchText) ?
+                            navigate("/patientdetail", {
+                              state: {
+                                cardid: idx.cardid,
+                                date: idx.date,
+                              },
+                            })
+                      : idx.date && idx.date.toString().includes(_searchText) ||
+                          idx.disease && idx.disease.toString().includes(_searchText) || idx.diagnosis && idx.diagnosis.toString().includes(_searchText) ||
+                          idx.syndromes && idx.syndromes.toString().includes(_searchText) || idx.medicines && idx.medicines.toString().includes(_searchText) ?
+                            navigate("/recipe", {
+                              state: {
+                                context: idx,
+                              },
+                            })
+                      : idx.albumtext && idx.albumtext.toString().includes(_searchText) ?
+                            navigate("/patientalbum", {
+                              state: {
+                                context: idx,
+                              },
+                            })
+                      : idx.toll && idx.toll.toString().includes(_searchText) || idx.receipt && idx.receipt.toString().includes(_searchText) ?
+                            navigate("/receipt", {
+                              state: {
+                                context: idx,
+                              },
+                            })
+                      : idx.prescription && idx.prescription.toString().includes(_searchText) ?
+                            navigate("/prescription", {
+                              state: {
+                                context: idx,
+                              },
+                            })
+                      : idx.pasthistory && idx.pasthistory.toString().includes(_searchText) || idx.pasthistorydate && idx.pasthistorydate.toString().includes(_searchText) ?
+                            navigate("/pasthistory", {
+                              state: {
+                                context: idx,
+                              },
+                            })
+                      : console.log("no matches!");
+
                     }}
                   >
                     <div>
