@@ -77,19 +77,28 @@ ${
   const changeDateTimeFormat1 = (dateString: any) => {
     const date = new Date(dateString);
 
-    const formattedDate = `${("0" + date.getDate()).slice(-2)}/${(
-      "0" +
-      (date.getMonth() + 1)
-    ).slice(-2)}/${date.getFullYear()} ${(
-      "0" +
-      (date.getUTCHours() > 12
-        ? date.getUTCHours() - 12
-        : date.getUTCHours() === 0
+    const formattedDate = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} 
+      ${date.getHours() > 12
+        ? date.getHours() - 12
+        : date.getHours() === 0
         ? 12
-        : date.getUTCHours())
-    ).slice(-2)}:${("0" + date.getMinutes()).slice(-2)} ${
-      date.getUTCHours() >= 12 ? "p.m." : "a.m."
-    }`;
+        : date.getHours()}:${date.getMinutes() < 10 ? "0" : ""}${date.getMinutes()} ${
+          date.getHours() >= 12 ? "p.m." : "a.m."
+        }`;
+
+    // const formattedDate = `${("0" + date.getDate()).slice(-2)}/${(
+    //   "0" +
+    //   (date.getMonth() + 1)
+    // ).slice(-2)}/${date.getFullYear()} ${(
+    //   "0" +
+    //   (date.getUTCHours() > 12
+    //     ? date.getUTCHours() - 12
+    //     : date.getUTCHours() === 0
+    //     ? 12
+    //     : date.getUTCHours())
+    // ).slice(-2)}:${("0" + date.getMinutes()).slice(-2)} ${
+    //   date.getUTCHours() >= 12 ? "p.m." : "a.m."
+    // }`;
 
     return formattedDate;
   };

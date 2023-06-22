@@ -31,10 +31,20 @@ const ScheduleAppointment = () => {
   const [recordStatus, setRecordStatus] = useState<boolean[]>([false]);
   const [recordEnabledIdx, setRecordEnabledIdx] = useState(0);
 
-  const contextDate = context && context.length > 0 ? context[0].date : null;
-  const [selectedDate, setSelectedDate] = useState<Date | null>(contextDate ? new Date(contextDate): new Date());
-  const [selectedTime, setSelectedTime] = useState<string>(contextDate
-    ? new Date(contextDate).toLocaleTimeString([], {
+  // const contextDate = context && context.length > 0 ? context[0].date : null;
+  // const [selectedDate, setSelectedDate] = useState<Date | null>(contextDate ? new Date(contextDate): new Date());
+  // const [selectedTime, setSelectedTime] = useState<string>(contextDate
+  //   ? new Date(contextDate).toLocaleTimeString([], {
+  //       hour: '2-digit',
+  //       minute: '2-digit',
+  //       hour12: false,
+  //     })
+  //   : moment().format('HH:mm'));  
+
+  const [contextDate, setContextDate] = useState(context && context.length > 0 ? context[0].date : null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(context && context.length > 0 && context[0].date ? new Date(context[0].date): new Date());
+  const [selectedTime, setSelectedTime] = useState<string>(context && context.length > 0 && context[0].date
+    ? new Date(context[0].date).toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
@@ -103,7 +113,7 @@ const ScheduleAppointment = () => {
     const patientID = context[recordEnabledIdx].patientid;
     const dateTime = new Date(formatDate(selectedDate) + " " + selectedTime);
 
-    if (contextDate) {
+    if (context && context.length > 0 && context[recordEnabledIdx].date) {
       // update appointment to backend database
       const cardID = context[recordEnabledIdx].cardid;
       const data = { cardID, dateTime};

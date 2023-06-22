@@ -675,12 +675,12 @@ const CheckPatient: FC = () => {
                       </div>
                     ) : (
                       <div className="flex flex-row">
-                        <div className="px-2">
+                        {/* <div className="px-2">
                           <img src={blankImage} className="max-w-none" />
                         </div>
                         <div className="px-2">
                           <img src={blankImage} className="max-w-none" />
-                        </div>
+                        </div> */}
                       </div>
                     )}
                     <div className="flex flex-row items-end">

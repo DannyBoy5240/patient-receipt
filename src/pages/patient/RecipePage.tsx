@@ -159,16 +159,16 @@ const RecipePage: FC = () => {
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
         const aspectRatio = canvas.width / canvas.height;
-        let imgWidth = pageWidth - 20;
+        let imgWidth = pageWidth - 12;
         let imgHeight = imgWidth / aspectRatio;
   
-        let marginLeft = 10;
+        let marginLeft = 6;
   
         // Adjust the dimensions if the captured screenshot is taller than the PDF page
         if (imgHeight > pageHeight) {
           imgHeight = pageHeight - 20;
           imgWidth = imgHeight * aspectRatio;
-          marginLeft = (pageWidth - imgWidth) / 2 + 10;
+          marginLeft = (pageWidth - imgWidth) / 2 + 6;
         }
 
         const marginTop = 10;
@@ -251,7 +251,7 @@ const RecipePage: FC = () => {
               className="font-bold text-lg pt-5"
               style={{ color: Theme.COLOR_DEFAULT }}
             >
-              <span className="border-b border-b-[#64B3EC]">處方</span>
+              <span style={{textDecorationLine: "underline", textDecorationSkipInk: "none", textUnderlineOffset: "0.3rem"}}>處方</span>
             </div>
           </div>
           {/* User Info */}
@@ -358,7 +358,7 @@ const RecipePage: FC = () => {
           >
             <img src={editIcon} className="max-w-none" />
           </div>
-          <div className="relative p-3">
+          {/* <div className="relative p-3">
             <div onClick={() => setIsOpenShare(!isOpenShare)}>
               <img src={shareIcon} className="max-w-none" />
             </div>
@@ -370,7 +370,7 @@ const RecipePage: FC = () => {
                 </div>
               : <></>
             }
-          </div>
+          </div> */}
           <div className="p-3" onClick={() => printHandler()}>
             <img src={printIcon} className="max-w-none" />
           </div>
