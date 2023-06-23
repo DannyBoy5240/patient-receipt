@@ -285,7 +285,7 @@ const EditAccountPage: FC = () => {
               <div className="w-1/2">Username</div>
               <div className="w-1/2" style={{ color: Theme.COLOR_DEFAULT }}>
                 <input
-                  className="focus:outline-none"
+                  className="focus:outline-none bg-transparent"
                   value={userName}
                   onChange={(ev) => setUserName(ev.target.value)}
                   disabled={!isEditMode}
@@ -296,7 +296,7 @@ const EditAccountPage: FC = () => {
               <div className="w-1/2">Email</div>
               <div className="w-1/2" style={{ color: Theme.COLOR_DEFAULT }}>
                 <input
-                  className="focus:outline-none"
+                  className="focus:outline-none bg-transparent"
                   value={userEmail ? userEmail : ""}
                   onChange={(ev) => setUserEmail(ev.target.value)}
                   disabled={!isEditMode}
@@ -314,7 +314,7 @@ const EditAccountPage: FC = () => {
               </div>
               <div className="w-1/2" style={{ color: Theme.COLOR_DEFAULT }}>
                 <input
-                  className="focus:outline-none"
+                  className="focus:outline-none bg-transparent"
                   type="password"
                   value={password}
                   onChange={(ev) => setPassword(ev.target.value)}
@@ -334,7 +334,7 @@ const EditAccountPage: FC = () => {
                 </div>
                 <div className="w-1/2" style={{ color: Theme.COLOR_DEFAULT }}>
                   <input
-                    className="focus:outline-none"
+                    className="focus:outline-none bg-transparent"
                     type="password"
                     value={confirmedPassword}
                     onChange={(ev) => setConfirmedPassword(ev.target.value)}
@@ -349,7 +349,7 @@ const EditAccountPage: FC = () => {
               <div className="w-1/2">Full name</div>
               <div className="w-1/2" style={{ color: Theme.COLOR_DEFAULT }}>
                 <input
-                  className="focus:outline-none"
+                  className="focus:outline-none bg-transparent"
                   value={fullName}
                   onChange={(ev) => setFullName(ev.target.value)}
                   disabled={!isEditMode}
@@ -360,7 +360,7 @@ const EditAccountPage: FC = () => {
               <div className="w-1/2">Doctor ID</div>
               <div className="w-1/2" style={{ color: Theme.COLOR_DEFAULT }}>
                 <input
-                  className="focus:outline-none"
+                  className="focus:outline-none bg-transparent"
                   value={doctorID}
                   onChange={(ev) => setDoctorID(ev.target.value)}
                   disabled={!isEditMode}
@@ -403,7 +403,7 @@ const EditAccountPage: FC = () => {
               <div className="w-1/3 pt-2">Logo</div>
               <div className="w-2/3" style={{ color: Theme.COLOR_DEFAULT }}>
                 <input
-                  className="focus:outline-none w-full font-bold text-5xl"
+                  className="focus:outline-none w-full bg-transparent font-bold text-5xl"
                   value={companyLogo}
                   onChange={(ev) => setCompanyLogo(ev.target.value)}
                   disabled={!isEditMode}
@@ -414,7 +414,7 @@ const EditAccountPage: FC = () => {
               <div className="w-1/3">Address</div>
               <div className="w-2/3" style={{ color: Theme.COLOR_DEFAULT }}>
                 <input
-                  className="focus:outline-none w-full"
+                  className="focus:outline-none w-full bg-transparent"
                   value={companyAddress}
                   onChange={(ev) => setCompanyAddress(ev.target.value)}
                   disabled={!isEditMode}
@@ -425,7 +425,7 @@ const EditAccountPage: FC = () => {
               <div className="w-1/3">Tel</div>
               <div className="w-2/3" style={{ color: Theme.COLOR_DEFAULT }}>
                 <input
-                  className="focus:outline-none w-full"
+                  className="focus:outline-none w-full bg-transparent"
                   value={companyTelephone}
                   onChange={(ev) => setCompanyTelephone(ev.target.value)}
                   disabled={!isEditMode}

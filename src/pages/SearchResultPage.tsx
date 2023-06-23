@@ -195,7 +195,6 @@ const SearchResultPage: FC = () => {
                               },
                             })
                       : console.log("no matches!");
-
                     }}
                   >
                     <div>
