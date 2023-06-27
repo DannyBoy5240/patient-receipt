@@ -121,7 +121,14 @@ const PastHistoryPage: FC = () => {
               className="flex flex-row text-base font-bold"
               style={{ color: Theme.COLOR_DEFAULT }}
             >
-              <div>
+              <div className="hover:cursor-pointer" 
+                style={{textDecorationLine: "underline", textDecorationSkipInk: "none", textUnderlineOffset: "0.3rem"}}
+                onClick={() => navigate("/patientdetail", {
+                    state: {
+                      cardid: context.cardid,
+                      date: context.date,
+                    },
+                  })}>
                 {context ? context.name : ""} (
                 {context ? (context.sex == 1 ? "男" : "女") : ""})
               </div>

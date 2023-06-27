@@ -44,6 +44,12 @@ const SearchResultPage: FC = () => {
         console.log("Get searched patient card for payment successfully!");
         console.log("searched result -> ", data.data);
         if (data.data.length > 0) {
+          // setContext(data.data.filter(
+          //   (obj: any, index: any) =>
+          //     data
+          //       .slice(0, index)
+          //       .every((otherObj: any) => JSON.stringify(obj) !== JSON.stringify(otherObj))
+          // ));
           setContext(data.data);
         }
       })
@@ -131,24 +137,21 @@ const SearchResultPage: FC = () => {
                   (a: any, b: any) =>
                     new Date(b.date).getTime() - new Date(a.date).getTime()
                 )
+                .filter((obj: any, index: any, array: any) => {
+                  const isUniqueCardId = array.findIndex((item: any) => item.cardid === obj.cardid) === index;                
+                  return isUniqueCardId;
+                })
+                // .filter((obj: any, index: number, array: any) => {
+                //   console.log("---", obj.patientid, "---", obj.detail, "***", obj.detail.toString().includes(_searchText));
+                //   return !array.some((item: any, itemIndex: number) => {
+                //     return itemIndex !== index && item.patientid === obj.patientid && item.detail === obj.detail && (obj.detail && obj.detail.toString().includes(_searchText));
+                //   });
+                // })
                 .map((idx: any, kkk: any) => (
-                  // <PatientResultItem
-                  //   key={"searchresult"+kkk}
-                  //   mode={2}
-                  //   cardid={idx.cardid}
-                  //   name={idx.name}
-                  //   newdiease={idx.newdiease}
-                  //   telephone={idx.telephone}
-                  //   age={idx.age}
-                  //   sex={idx.sex}
-                  //   doctor={idx.doctor}
-                  //   date={idx.date}
-                  // />
                   <div
                     className="absolute p-4 rounded-xl border border-[#D3E7F6] shadow-lg bg-white w-full"
                     key={idx.date + kkk}
                     style={{ top: kkk * 75 + 20, zIndex: kkk }}
-                    // onClick={() => showCurrentSearchSelectedHandle(idx, kkk)}
                     onClick={() => {
                       
                       idx.name && idx.name.toString().includes(_searchText) || idx.engname && idx.engname.toString().includes(_searchText) ||
@@ -199,7 +202,7 @@ const SearchResultPage: FC = () => {
                             navigate("/patientrecord", {
                               state: {
                                 context: idx,
-                                searchtext: _searchText,
+                                searchtext: idx.detail,
                               },
                             })
                       : console.log("no matches!");
@@ -211,6 +214,7 @@ const SearchResultPage: FC = () => {
                     </div>
                     {
                       idx.name && idx.name.toString().includes(_searchText) ?
+                        // && context.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, kkk - 1).filter((obj: any) => obj.name && obj.name.includes(_searchText)).length == 0 ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">中文姓名</div>
                           <div

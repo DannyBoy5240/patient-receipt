@@ -22,9 +22,11 @@ const PatientRecordPage: FC = () => {
   const _context = location.state.context;
   const _searchtext = location.state.searchtext;
 
+  console.log("record -> ", _context);
+
   const [ptCardList, setPtCardList] = useState([]);
   const [currentSelected, setCurrentSelected] = useState(0);
-  const [searchTerm, setSearchTerm] = useState(_searchtext ? _searchtext : "");
+  const [searchTerm, setSearchTerm] = useState("");
   const [isSearched, setIsSearched] = useState(false);
 
   const navigate = useNavigate();
@@ -49,12 +51,11 @@ const PatientRecordPage: FC = () => {
           setCurrentSelected(data.data.length - 1);
           // 
           if (_searchtext) {
-            setIsSearched(true);
+            // setIsSearched(true);
             // Variable to store the index of the matching value
             let index = -1;
-
-            for (let i = 0; i < data.length; i++) {
-              if (data.data[i].details === searchTerm) {
+            for (let i = 0; i < data.data.length; i++) {
+              if (data.data[i].detail == _searchtext) {
                 index = i;
                 break; // Exit the loop once a match is found
               }
@@ -168,7 +169,14 @@ const PatientRecordPage: FC = () => {
               className="flex flex-row text-base font-bold px-1"
               style={{ color: Theme.COLOR_DEFAULT }}
             >
-              <div>
+              <div className="hover:cursor-pointer" 
+                style={{textDecorationLine: "underline", textDecorationSkipInk: "none", textUnderlineOffset: "0.3rem"}}
+                onClick={() => navigate("/patientdetail", {
+                    state: {
+                      cardid: _context.cardid,
+                      date: _context.date,
+                    },
+                  })}>
                 {_context ? _context.name : ""} (
                 {_context ? (_context.sex == 1 ? "男" : "女") : ""})
               </div>
