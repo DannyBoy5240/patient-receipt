@@ -265,7 +265,13 @@ const RecipePage: FC = () => {
               </div>
               <div className="py-1">
                 <span style={{ color: Theme.COLOR_DEFAULT }}>病人姓名:</span>
-                <span className="pl-2 text-black text-opacity-60">
+                <span className="pl-2 text-black text-opacity-60 hover:cursor-pointer" style={{textDecorationLine: "underline", textDecorationSkipInk: "none", textUnderlineOffset: "0.3rem"}}
+                  onClick={() => navigate("/patientdetail", {
+                    state: {
+                      cardid: _context.cardid,
+                      date: _context.date,
+                    },
+                  })}>
                   {curName}
                 </span>
               </div>
@@ -340,7 +346,7 @@ const RecipePage: FC = () => {
               </div>
             </div>
             <div
-              className="p-3 text-xs flex justify-between"
+              className="p-3 text-xs text-center"
               style={{ color: Theme.COLOR_DEFAULT }}
             >
               <div>地址: {companyInfo.address}</div>

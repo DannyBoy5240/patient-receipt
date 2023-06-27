@@ -111,12 +111,14 @@ const ScheduleAppointment = () => {
     const doctorName = _user.username;
     if (!context || context.legnth == 0)  return;
     const patientID = context[recordEnabledIdx].patientid;
+    console.log("---", formatDate(selectedDate) + " " + selectedTime);
     const dateTime = new Date(formatDate(selectedDate) + " " + selectedTime);
+    console.log("***", dateTime.toString());
 
     if (context && context.length > 0 && context[recordEnabledIdx].date) {
       // update appointment to backend database
       const cardID = context[recordEnabledIdx].cardid;
-      const data = { cardID, dateTime};
+      const data = { cardID, dateTime };
       await fetch(BACKEND_URL + "/updateappointment", {
         method: "POST",
         headers: {
@@ -212,8 +214,13 @@ const ScheduleAppointment = () => {
                       <></>
                     )}
                   </div>
-                  <div className="px-2">{idx.name}</div>
-                  <div>{idx.telephone}</div>
+                  <div 
+                    className="flex border-b border-[#B6DBF5] ml-2"
+                    onClick={() => navigate("/addappointmentpatient", { state:{ context: idx, mode: 2 } })}
+                  >
+                    <div className="pr-2">{idx.name ? idx.name : (idx.chiname ? idx.chiname : "")}</div>
+                    <div>{idx.telephone}</div>
+                  </div>
                 </div>
                 <div
                   className="border-b border-[#B6DBF5]"

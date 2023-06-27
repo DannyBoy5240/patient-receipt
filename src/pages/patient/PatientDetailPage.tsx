@@ -94,7 +94,7 @@ const PatientDetailPage: FC = () => {
                 className="flex flex-row text-base font-bold"
                 style={{ color: Theme.COLOR_DEFAULT }}
               >
-                <div>
+                <div className="border-b border-b-[#64B3EC]" onClick={() => navigate("/addappointmentpatient", { state:{ context: userData, mode: 3 } })}>
                   {userData ? (userData as any).name : ""} (
                   {userData ? ((userData as any).sex == 1 ? "男" : "女") : ""})
                 </div>

@@ -20,6 +20,7 @@ const PatientAlbumPage: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const context = location.state.context;
+  const searchtext = location.state.searchtext;
 
   const [patientCardList, setPatientCardList] = useState([]);
 
@@ -159,7 +160,7 @@ const PatientAlbumPage: FC = () => {
               )
               .filter(
                 (lst: any) =>
-                  new Date().getTime() > new Date(lst.date).getTime()
+                  new Date().getTime() > new Date(lst.date).getTime() && (lst.albumtext?.includes(searchtext ? searchtext : ""))
               )
               .map((idx: any, kkk: any) =>
                 idx.album && idx.album.split(", ").length > 0 ? (

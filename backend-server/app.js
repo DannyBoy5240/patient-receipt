@@ -268,11 +268,29 @@ app.post("/getpthistory", (req, res) => {
 
 // update patient card patient history
 app.post("/updateptcardpasthistory", (req, res) => {
-  const { cardid, historydata, historydate } = req.body;
+  // const { cardid, historydata, historydate } = req.body;
+  // // update on DB
+  // db.query(
+  //   `UPDATE pt_cards SET pasthistory = ?, pasthistorydate = ? WHERE cardid = ?`,
+  //   [historydata, historydate, cardid],
+  //   (err, rows) => {
+  //     if (err) {
+  //       res
+  //         .status(500)
+  //         .json({ message: "Update patient history failed!" + err.message });
+  //     } else {
+  //       res
+  //         .status(200)
+  //         .json({ message: "Update patient history successfully!" });
+  //     }
+  //   }
+  // );
+
+  const { patientid, historydata, historydate } = req.body;
   // update on DB
   db.query(
-    `UPDATE pt_cards SET pasthistory = ?, pasthistorydate = ? WHERE cardid = ?`,
-    [historydata, historydate, cardid],
+    `UPDATE patients SET pasthistory = ?, pasthistorydate = ? WHERE patientid = ?`,
+    [historydata, historydate, patientid],
     (err, rows) => {
       if (err) {
         res
@@ -287,47 +305,102 @@ app.post("/updateptcardpasthistory", (req, res) => {
   );
 });
 
-// add new patient
-app.post("/addnewpatient", (req, res) => {
-  const {
-    chiname,
-    engname,
-    birthday,
-    sex,
-    patientid,
-    telephone,
-    address,
-    emergency,
-    emergencynumber,
-  } = req.body;
+// add new and update patient
+app.post("/updatepatient", (req, res) => {
+  const { newPatient, mode, oldPatientID } = req.body;
 
-  const formattedBirthday = new Date(birthday)
+  const formattedBirthday = new Date(newPatient.birthday)
     .toISOString()
     .slice(0, 19)
     .replace("T", " ");
 
-  const sql = `INSERT INTO patients (name, engname, birthday, sex, patientid, telephone, address, emergency, emergencynumber) VALUES (?, ?, DATE_FORMAT(?, "%Y-%m-%d %H:%i:%s"), ?, ?, ?, ?, ?, ?)`;
+  if (mode == 1) {
+    const sql = `INSERT INTO patients (name, engname, birthday, sex, patientid, telephone, address, emergency, emergencynumber) VALUES (?, ?, DATE_FORMAT(?, "%Y-%m-%d %H:%i:%s"), ?, ?, ?, ?, ?, ?)`;
+    const values = [
+      newPatient.chiname,
+      newPatient.engname,
+      formattedBirthday,
+      newPatient.sex == "男" ? "1" : "0",
+      newPatient.patientid,
+      newPatient.telephone,
+      newPatient.address,
+      newPatient.emergency,
+      newPatient.emergencynumber,
+    ];
+  
+    // Execute the query
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        res.status(200).json({ message: "Error updating patient: " + err });
+      } else {
+        res.status(200).json({ message: "patient updating successfully!" });
+      }
+    });
+  }
+  else if (mode == 2 || mode == 3) {
+    const sql = `UPDATE patients SET name = ?, engname = ?, birthday = ?, sex = ?, patientid = ?, telephone = ?, address = ?, emergency = ?, emergencynumber = ? WHERE patientid = ?`;
+    const values = [
+      newPatient.chiname,
+      newPatient.engname,
+      formattedBirthday,
+      newPatient.sex == "男" ? "1" : "0",
+      newPatient.patientid,
+      newPatient.telephone,
+      newPatient.address,
+      newPatient.emergency,
+      newPatient.emergencynumber,
+      oldPatientID,
+    ];
+  
+    // Execute the query
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        res.status(200).json({ message: "Error updating patient: " + err });
+      } else {
+        res.status(200).json({ message: "patient updating successfully!" });
+      }
+    });
+  }
 
-  const values = [
-    chiname,
-    engname,
-    formattedBirthday,
-    sex == "男" ? "1" : "0",
-    patientid,
-    telephone,
-    address,
-    emergency,
-    emergencynumber,
-  ];
+  // const {
+  //   chiname,
+  //   engname,
+  //   birthday,
+  //   sex,
+  //   patientid,
+  //   telephone,
+  //   address,
+  //   emergency,
+  //   emergencynumber,
+  // } = req.body;
 
-  // Execute the query
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      res.status(200).json({ message: "Error adding patient: " + err });
-    } else {
-      res.status(200).json({ message: "patient added successfully!" });
-    }
-  });
+  // const formattedBirthday = new Date(birthday)
+  //   .toISOString()
+  //   .slice(0, 19)
+  //   .replace("T", " ");
+
+  // const sql = `INSERT INTO patients (name, engname, birthday, sex, patientid, telephone, address, emergency, emergencynumber) VALUES (?, ?, DATE_FORMAT(?, "%Y-%m-%d %H:%i:%s"), ?, ?, ?, ?, ?, ?)`;
+
+  // const values = [
+  //   chiname,
+  //   engname,
+  //   formattedBirthday,
+  //   sex == "男" ? "1" : "0",
+  //   patientid,
+  //   telephone,
+  //   address,
+  //   emergency,
+  //   emergencynumber,
+  // ];
+
+  // // Execute the query
+  // db.query(sql, values, (err, result) => {
+  //   if (err) {
+  //     res.status(200).json({ message: "Error adding patient: " + err });
+  //   } else {
+  //     res.status(200).json({ message: "patient added successfully!" });
+  //   }
+  // });
 });
 
 // update last patient history
@@ -603,7 +676,12 @@ app.post("/updatecheckpatient", (req, res) => {
   if (!context || !context.cardid) return;
 
   // update card information
-  let sql = `UPDATE pt_cards SET albumtext = ?, disease = ?, diagnosis = ?, syndromes = ?, medicines = ?, remark = ?, pasthistory = ?, pasthistorydate = ?, checked = 1 WHERE cardid = ?`;
+  // let sql = `UPDATE pt_cards SET albumtext = ?, disease = ?, diagnosis = ?, syndromes = ?, medicines = ?, remark = ?, pasthistory = ?, pasthistorydate = ?, checked = 1 WHERE cardid = ?`;
+
+  let sql = `UPDATE pt_cards JOIN patients ON pt_cards.patientid = patients.patientid
+      SET pt_cards.albumtext = ?,    pt_cards.disease = ?,    pt_cards.diagnosis = ?,    pt_cards.syndromes = ?,    pt_cards.medicines = ?,    pt_cards.remark = ?,
+        patients.pasthistory = ?,    patients.pasthistorydate = ?,    pt_cards.checked = 1 WHERE pt_cards.cardid = ?`;
+
   const values = [
     context.albumtext,
     context.disease,
@@ -696,26 +774,28 @@ app.post("/getptcardpayment", (req, res) => {
   const { searchText, curDate, paidMode } = req.body;
   if (searchText) {
     db.query(
-      `SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid 
-        WHERE (COALESCE(patients.name, '') LIKE ? OR COALESCE(patients.engname, '') LIKE ? OR COALESCE(patients.birthday, '') LIKE ? 
-          OR COALESCE(patients.patientid, '') LIKE ? OR COALESCE(patients.telephone, '') LIKE ? OR COALESCE(patients.address, '') LIKE ? 
-          OR COALESCE(patients.emergency, '') LIKE ? OR COALESCE(patients.emergencynumber, '') LIKE ? OR COALESCE(pt_cards.doctorid, '') LIKE ?
-          OR COALESCE(pt_cards.patientid, '') LIKE ? OR COALESCE(pt_cards.doctor, '') LIKE ? OR COALESCE(pt_cards.date, '') LIKE ?
-          OR COALESCE(pt_cards.albumtext, '') LIKE ? OR COALESCE(pt_cards.disease, '') LIKE ? OR COALESCE(pt_cards.diagnosis, '') LIKE ?
-          OR COALESCE(pt_cards.syndromes, '') LIKE ? OR COALESCE(pt_cards.medicines, '') LIKE ? OR COALESCE(pt_cards.remark, '') LIKE ?
-          OR COALESCE(pt_cards.toll, '') LIKE ? OR COALESCE(pt_cards.receipt, '') LIKE ? OR COALESCE(pt_cards.prescription, '') LIKE ?
-          OR COALESCE(pt_cards.pasthistory, '') LIKE ? OR COALESCE(pt_cards.pasthistorydate, '') LIKE ?)`,
+      `SELECT C.*, D.* FROM (SELECT A.*, B.patientid AS PID, B.cardid, B.doctorid, B.doctor, B.date, B.albumtext, B.disease, B.diagnosis, B.syndromes, B.toll, B.medicines, B.receipt, B.prescription FROM patients AS A LEFT JOIN pt_cards AS B ON A.patientid = B.patientid) AS C LEFT JOIN pt_history AS D ON C.patientid=D.id
+        WHERE (COALESCE(C.name, '') LIKE ? OR COALESCE(C.engname, '') LIKE ? OR COALESCE(C.birthday, '') LIKE ? 
+          OR COALESCE(C.patientid, '') LIKE ? OR COALESCE(C.telephone, '') LIKE ? OR COALESCE(C.address, '') LIKE ? 
+          OR COALESCE(C.emergency, '') LIKE ? OR COALESCE(C.emergencynumber, '') LIKE ? OR COALESCE(C.doctorid, '') LIKE ?
+          OR COALESCE(C.patientid, '') LIKE ? OR COALESCE(C.doctor, '') LIKE ? OR COALESCE(C.date, '') LIKE ?
+          OR COALESCE(C.albumtext, '') LIKE ? OR COALESCE(C.disease, '') LIKE ? OR COALESCE(C.diagnosis, '') LIKE ?
+          OR COALESCE(C.syndromes, '') LIKE ? OR COALESCE(C.medicines, '') LIKE ?
+          OR COALESCE(C.toll, '') LIKE ? OR COALESCE(C.receipt, '') LIKE ? OR COALESCE(C.prescription, '') LIKE ?
+          OR COALESCE(D.detail, '') LIKE ?)`,
       [
         `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
         `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
         `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
-        `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`
+        `%${searchText}%`,`%${searchText}%`,`%${searchText}%`
       ],
       (err, rows) => {
         if (err) {
+          console.log(err);
           res.status(500).send(err.message);
         } else {
-          res.status(200).json({ data: rows });
+          const data = JSON.parse(JSON.stringify(rows));
+          res.status(200).json({ data });
         }
       }
     );

@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,17 +8,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import Theme from "../../assets/color";
 import { BACKEND_URL } from "../../constants";
 
-import Avatar1 from "../../assets/avatar1.svg";
-import DashBack from "../../assets/img/alert_board.png";
-import searchIcon from "../../assets/icons/search_ico.svg";
 import downIcon from "../../assets/icons/down_ico.svg";
 
 import NavBar from "../../components/NavBar";
 import Header from "../../components/Header";
-import PatientThumbnail from "../../components/patient/PatientThumbnail";
 
 const AddAppointmentPatient: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const mode = location.state.mode; // mode: 1 -> add appointmentpatient, mode: 2 -> edit patient
+  const context = location.state.context;
 
   type PatientDataType = {
     chiname: string;
@@ -62,17 +62,29 @@ const AddAppointmentPatient: FC = () => {
   };
 
   const addNewPatientHandler = async () => {
-    await fetch(BACKEND_URL + "/addnewpatient", {
+    const oldPatientID = context.patientid;
+    const data = {newPatient, mode, oldPatientID};
+    await fetch(BACKEND_URL + "/updatepatient", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newPatient),
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data.message);
-        navigate("/scheduleappointment", {state:{context: [newPatient]}});
+        if (mode == 3)  {
+          // navigate(-1);
+          navigate("/patientdetail", {
+            state: {
+              cardid: context.cardid,
+              date: context.date,
+            },
+          })
+        }
+        else
+          navigate("/scheduleappointment", {state:{context: [newPatient]}});
       })
       .catch((error) => {
         console.error(error);
@@ -86,6 +98,22 @@ const AddAppointmentPatient: FC = () => {
     if (!token) {
       // Redirect to login page if token is not present
       navigate("/");
+    } else {
+      if (mode && (mode == 2 || mode == 3))  {
+        setNewPatient({
+          chiname: context && context.name ? context.name : (context.chiname ? context.chiname : ""),
+          engname: context ? context.engname : "",
+          birthday: context ? new Date(context.birthday) : new Date(),
+          sex: context ? context.sex == 1 ? "男" : "女" : "",
+          patientid: context ? context.patientid : "",
+          telephone: context ? context.telephone : "",
+          address: context ? context.address : "",
+          emergency: context ? context.emergency : "",
+          emergencynumber: context ? context.emergencynumber : ""
+        });
+
+        setSelectedDate(context ? new Date(context.birthday) : new Date());
+      }
     }
   }, [navigate]);
 
@@ -93,7 +121,7 @@ const AddAppointmentPatient: FC = () => {
     <div className="relative">
       <div className="h-screen overflow-y-auto">
         {/* Header */}
-        <Header title="New Patient" />
+        <Header title={mode == 2 || mode == 3 ? "Edit Patient" : "New Patient"} />
         {/* Patient Record */}
         <div
           className="w-full px-3 pt-2 pb-[140px] text-[13px]"

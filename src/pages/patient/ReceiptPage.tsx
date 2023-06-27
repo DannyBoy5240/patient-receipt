@@ -265,11 +265,17 @@ const ReceiptPage: FC = () => {
               </div>
               <div className="py-1">
                 <span style={{ color: Theme.COLOR_DEFAULT }}>病人姓名:</span>
-                <span className="pl-2 text-black text-opacity-60">
+                <span className="pl-2 text-black text-opacity-60"
+                  onClick={() => navigate("/patientdetail", {
+                    state: {
+                      cardid: context.cardid,
+                      date: context.date,
+                    },
+                  })}>
                   <input
                     type="text"
-                    className="focus:outline-none"
-                    style={{lineHeight: "2", verticalAlign: "middle"}}
+                    className="focus:outline-none hover:cursor-pointer"
+                    style={{lineHeight: "2", verticalAlign: "middle", textDecorationLine: "underline", textDecorationSkipInk: "none", textUnderlineOffset: "0.3rem"}}
                     value={curName}
                     onChange={(ev) => setCurName(ev.target.value)}
                     readOnly={true}
@@ -357,7 +363,7 @@ const ReceiptPage: FC = () => {
               </div> */}
             </div>
             <div
-              className="flex flex-row justify-between p-3 text-xs"
+              className="p-3 text-xs text-center"
               style={{ color: Theme.COLOR_DEFAULT }}
             >
               <div>地址: {companyInfo.address}</div>

@@ -20,10 +20,11 @@ const PatientRecordPage: FC = () => {
   const location = useLocation();
 
   const _context = location.state.context;
+  const _searchtext = location.state.searchtext;
 
   const [ptCardList, setPtCardList] = useState([]);
   const [currentSelected, setCurrentSelected] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(_searchtext ? _searchtext : "");
   const [isSearched, setIsSearched] = useState(false);
 
   const navigate = useNavigate();
@@ -46,6 +47,20 @@ const PatientRecordPage: FC = () => {
         if (data.data.length > 0) {
           setPtCardList(data.data);
           setCurrentSelected(data.data.length - 1);
+          // 
+          if (_searchtext) {
+            setIsSearched(true);
+            // Variable to store the index of the matching value
+            let index = -1;
+
+            for (let i = 0; i < data.length; i++) {
+              if (data.data[i].details === searchTerm) {
+                index = i;
+                break; // Exit the loop once a match is found
+              }
+            }
+            if (index != -1)  setCurrentSelected(index);
+          }
         }
       })
       .catch((error) => {
@@ -205,7 +220,7 @@ const PatientRecordPage: FC = () => {
                   )}
                   <div className="grow p-2" style={{ overflowWrap: "break-word" }}>
                     {ptCardList && ptCardList.length > 0
-                      ? (ptCardList[currentSelected] as any).detail
+                      ? (ptCardList.filter((idx: any) => idx.detail.includes(searchTerm))[currentSelected] as any)?.detail
                       : ""}
                   </div>
                   {currentSelected < ptCardList.length - 1 ? (

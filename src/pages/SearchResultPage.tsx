@@ -174,6 +174,7 @@ const SearchResultPage: FC = () => {
                             navigate("/patientalbum", {
                               state: {
                                 context: idx,
+                                searchtext: _searchText,
                               },
                             })
                       : idx.toll && idx.toll.toString().includes(_searchText) || idx.receipt && idx.receipt.toString().includes(_searchText) ?
@@ -194,6 +195,13 @@ const SearchResultPage: FC = () => {
                                 context: idx,
                               },
                             })
+                      : idx.detail && idx.detail.toString().includes(_searchText) || idx.details && idx.details.toString().includes(_searchText) ?
+                            navigate("/patientrecord", {
+                              state: {
+                                context: idx,
+                                searchtext: _searchText,
+                              },
+                            })
                       : console.log("no matches!");
                     }}
                   >
@@ -204,7 +212,7 @@ const SearchResultPage: FC = () => {
                     {
                       idx.name && idx.name.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">中文姓名</div>
+                          <div className="pr-3 w-[100px]">中文姓名</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.name, 20) }}
@@ -213,7 +221,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.engname && idx.engname.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">英文姓名</div>
+                          <div className="pr-3 w-[100px]">英文姓名</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.engname, 20) }}
@@ -222,7 +230,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.birthday && idx.birthday.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">出生日期</div>
+                          <div className="pr-3 w-[100px]">出生日期</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.birthday, 20) }}
@@ -231,7 +239,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.patientid && idx.patientid.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">身份證號碼</div>
+                          <div className="pr-3 w-[100px]">身份證號碼</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.patientid, 20) }}
@@ -240,7 +248,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.telephone && idx.telephone.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">電話號碼</div>
+                          <div className="pr-3 w-[100px]">電話號碼</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.telephone, 20) }}
@@ -249,7 +257,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.address && idx.address.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">地址</div>
+                          <div className="pr-3 w-[100px]">地址</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.address, 20) }}
@@ -258,7 +266,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.emergency && idx.emergency.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">緊急聯絡人</div>
+                          <div className="pr-3 w-[100px]">緊急聯絡人</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.emergency, 20) }}
@@ -267,7 +275,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.emergencynumber && idx.emergencynumber.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">緊急聯絡人電話</div>
+                          <div className="pr-3 w-[100px]">緊急聯絡人電話</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.emergencynumber, 20) }}
@@ -277,7 +285,7 @@ const SearchResultPage: FC = () => {
                       // patint card property search
                       : idx.doctorid && idx.doctorid.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">DoctorID</div>
+                          <div className="pr-3 w-[100px]">DoctorID</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.doctorid, 20) }}
@@ -286,7 +294,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.doctor && idx.doctor.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">医生</div>
+                          <div className="pr-3 w-[100px]">医生</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.doctor, 20) }}
@@ -295,7 +303,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.date && idx.date.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">預約到診日期</div>
+                          <div className="pr-3 w-[100px]">預約到診日期</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.date, 20) }}
@@ -304,7 +312,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.albumtext && idx.albumtext.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">病歷相簿</div>
+                          <div className="pr-3 w-[100px]">病歷相簿</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.albumtext, 20) }}
@@ -313,7 +321,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.disease && idx.disease.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">疾病</div>
+                          <div className="pr-3 w-[100px]">疾病</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.disease, 20) }}
@@ -322,7 +330,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.diagnosis && idx.diagnosis.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">診斷</div>
+                          <div className="pr-3 w-[100px]">診斷</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.diagnosis, 20) }}
@@ -331,7 +339,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.syndromes && idx.syndromes.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">證型</div>
+                          <div className="pr-3 w-[100px]">證型</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.syndromes, 20) }}
@@ -340,7 +348,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.medicines && idx.medicines.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">方藥/穴位</div>
+                          <div className="pr-3 w-[100px]">方藥/穴位</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.medicines, 20) }}
@@ -349,7 +357,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.toll && idx.toll.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">收費</div>
+                          <div className="pr-3 w-[100px]">收費</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.toll, 20) }}
@@ -358,7 +366,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.receipt && idx.receipt.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">收據</div>
+                          <div className="pr-3 w-[100px]">收據</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.receipt, 20) }}
@@ -367,7 +375,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.prescription && idx.prescription.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">到診證明書</div>
+                          <div className="pr-3 w-[100px]">到診證明書</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.prescription, 20) }}
@@ -376,7 +384,7 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.pasthistory && idx.pasthistory.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">既往史</div>
+                          <div className="pr-3 w-[100px]">既往史</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.pasthistory, 20) }}
@@ -385,10 +393,19 @@ const SearchResultPage: FC = () => {
                         </div>
                       : idx.pasthistorydate && idx.pasthistorydate.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
-                          <div className="pr-3">既往史日期</div>
+                          <div className="pr-3 w-[100px]">既往史日期</div>
                           <div
                             style={{ width: "100%", overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.pasthistorydate, 20) }}
+                          >
+                          </div>
+                        </div>
+                      : idx.detail && idx.detail.toString().includes(_searchText) ?
+                        <div className="flex flex-row p-3">
+                          <div className="pr-3 w-[100px]">現病史</div>
+                          <div
+                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.detail, 20) }}
                           >
                           </div>
                         </div>

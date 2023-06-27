@@ -106,7 +106,7 @@ const AddAppointment: FC = () => {
             <div
               className="rounded-lg w-full p-3 text-white text-center"
               style={{ background: Theme.COLOR_DEFAULT }}
-              onClick={() => navigate("/addappointmentpatient")}
+              onClick={() => navigate("/addappointmentpatient", { state: { mode: 1 } })}
             >
               新增病人
             </div>

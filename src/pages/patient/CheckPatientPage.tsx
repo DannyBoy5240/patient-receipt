@@ -24,7 +24,7 @@ import Header from "../../components/Header";
 
 interface MedicineInfo {
   name: string;
-  amount: number;
+  amount: string;
 }
 
 interface CompanyInfoType {
@@ -891,14 +891,14 @@ const CheckPatient: FC = () => {
                           <span className="p-2 ml-2 bg-[#EAF4FB]">
                             <input
                               className="w-1/4 bg-[#EAF4FB] outline-none"
-                              type="number"
+                              // type="number"
                               value={idx.amount}
                               onChange={(ev) => {
                                 setStoreMedicineInfo((prevState) => {
                                   const newState = [...prevState]; // create a copy of the array
                                   newState[kkk] = {
                                     ...newState[kkk],
-                                    amount: parseInt(ev.target.value),
+                                    amount: ev.target.value,
                                   }; // update the name property of the specified element
                                   return newState;
                                 });
@@ -926,7 +926,7 @@ const CheckPatient: FC = () => {
                       onClick={() => {
                         setStoreMedicineInfo((prevState) => [
                           ...prevState,
-                          { name: "", amount: 0 },
+                          { name: "", amount: "" },
                         ]);
                       }}
                     >
@@ -1148,7 +1148,13 @@ const CheckPatient: FC = () => {
             </div>
             <div className="py-1">
               <span style={{ color: Theme.COLOR_DEFAULT }}>病人姓名:</span>
-              <span className="pl-2 text-black text-opacity-60">
+              <span className="pl-2 text-black text-opacity-60 hover:cursor-pointer" style={{textDecorationLine: "underline", textDecorationSkipInk: "none", textUnderlineOffset: "0.3rem"}}
+                onClick={() => navigate("/patientdetail", {
+                  state: {
+                    cardid: context.cardid,
+                    date: context.date,
+                  },
+                })}>
                 {context.name}
               </span>
             </div>
@@ -1191,10 +1197,10 @@ const CheckPatient: FC = () => {
             </div>
           </div>
           <div
-            className="p-3 text-xs flex flex-row justify-between"
+            className="p-3 text-xs text-center"
             style={{ color: Theme.COLOR_DEFAULT }}
           >
-            <div>地址: {companyInfo.address}</div>
+            <div className="py-1">地址: {companyInfo.address}</div>
             <div>電話: {companyInfo.tel}</div>
           </div>
         </div>
