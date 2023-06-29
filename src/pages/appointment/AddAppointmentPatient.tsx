@@ -62,7 +62,7 @@ const AddAppointmentPatient: FC = () => {
   };
 
   const addNewPatientHandler = async () => {
-    const oldPatientID = context.patientid;
+    const oldPatientID = context ? context.patientid : null;
     const data = {newPatient, mode, oldPatientID};
     await fetch(BACKEND_URL + "/updatepatient", {
       method: "POST",

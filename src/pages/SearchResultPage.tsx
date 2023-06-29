@@ -147,6 +147,29 @@ const SearchResultPage: FC = () => {
                 //     return itemIndex !== index && item.patientid === obj.patientid && item.detail === obj.detail && (obj.detail && obj.detail.toString().includes(_searchText));
                 //   });
                 // })
+                .filter((obj: any, index: any, array: any) => {
+                  console.log("*", obj);
+                  if (obj.name && obj.name.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.name && idx.name.includes(_searchText)))  return false;
+                  if (obj.engname && obj.engname.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.engname && idx.engname.includes(_searchText)))  return false;
+                  if (obj.birthday && obj.birthday.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.birthday && idx.birthday.includes(_searchText)))  return false;
+                  if (obj.telephone && obj.telephone.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.telephone && idx.telephone.includes(_searchText)))  return false;
+                  if (obj.address && obj.address.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.address && idx.address.includes(_searchText)))  return false;
+                  if (obj.emergency && obj.emergency.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.emergency && idx.emergency.includes(_searchText)))  return false;
+                  if (obj.emergencynumber && obj.emergencynumber.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.emergencynumber && idx.emergencynumber.includes(_searchText)))  return false;
+                  if (obj.doctorid && obj.doctorid.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.doctorid && idx.doctorid.includes(_searchText)))  return false;
+                  if (obj.date && obj.date.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.date && idx.date.includes(_searchText)))  return false;
+                  if (obj.disease && obj.disease.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.disease && idx.disease.includes(_searchText)))  return false;
+                  if (obj.syndromes && obj.syndromes.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.syndromes && idx.syndromes.includes(_searchText)))  return false;
+                  if (obj.medicines && obj.medicines.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.medicines && idx.medicines.includes(_searchText)))  return false;
+                  if (obj.albumtext && obj.albumtext.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.albumtext && idx.albumtext.includes(_searchText)))  return false;
+                  if (obj.toll && obj.toll.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.toll && idx.toll.includes(_searchText)))  return false;
+                  if (obj.receipt && obj.receipt.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.receipt && idx.receipt.includes(_searchText)))  return false;
+                  if (obj.prescription && obj.prescription.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.prescription && idx.prescription.includes(_searchText)))  return false;
+                  if (obj.pasthistory && obj.pasthistory.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.pasthistory && idx.pasthistory.includes(_searchText)))  return false;
+                  if (obj.pasthistorydate && obj.pasthistorydate.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.pasthistorydate && idx.pasthistorydate.includes(_searchText)))  return false;
+                  if (obj.detail && obj.detail.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.detail && idx.detail.includes(_searchText) && obj.patientid == idx.patientid))  return false;
+                  return true;
+                })
                 .map((idx: any, kkk: any) => (
                   <div
                     className="absolute p-4 rounded-xl border border-[#D3E7F6] shadow-lg bg-white w-full"
@@ -214,7 +237,6 @@ const SearchResultPage: FC = () => {
                     </div>
                     {
                       idx.name && idx.name.toString().includes(_searchText) ?
-                        // && context.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, kkk - 1).filter((obj: any) => obj.name && obj.name.includes(_searchText)).length == 0 ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">中文姓名</div>
                           <div
@@ -223,7 +245,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.engname && idx.engname.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.engname && idx.engname.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">英文姓名</div>
                           <div
@@ -232,7 +257,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.birthday && idx.birthday.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.birthday && idx.birthday.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">出生日期</div>
                           <div
@@ -241,7 +269,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.patientid && idx.patientid.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.patientid && idx.patientid.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">身份證號碼</div>
                           <div
@@ -250,7 +281,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.telephone && idx.telephone.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.telephone && idx.telephone.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">電話號碼</div>
                           <div
@@ -259,7 +293,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.address && idx.address.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.address && idx.address.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">地址</div>
                           <div
@@ -268,7 +305,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.emergency && idx.emergency.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.emergency && idx.emergency.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">緊急聯絡人</div>
                           <div
@@ -277,7 +317,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.emergencynumber && idx.emergencynumber.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.emergencynumber && idx.emergencynumber.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">緊急聯絡人電話</div>
                           <div
@@ -286,8 +329,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      // patint card property search
-                      : idx.doctorid && idx.doctorid.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.doctorid && idx.doctorid.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">DoctorID</div>
                           <div
@@ -296,7 +341,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.doctor && idx.doctor.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.doctor && idx.doctor.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">医生</div>
                           <div
@@ -305,7 +353,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.date && idx.date.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.date && idx.date.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">預約到診日期</div>
                           <div
@@ -314,7 +365,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.albumtext && idx.albumtext.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.albumtext && idx.albumtext.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">病歷相簿</div>
                           <div
@@ -323,7 +377,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.disease && idx.disease.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.disease && idx.disease.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">疾病</div>
                           <div
@@ -332,7 +389,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.diagnosis && idx.diagnosis.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.diagnosis && idx.diagnosis.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">診斷</div>
                           <div
@@ -341,7 +401,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.syndromes && idx.syndromes.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.syndromes && idx.syndromes.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">證型</div>
                           <div
@@ -350,7 +413,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.medicines && idx.medicines.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.medicines && idx.medicines.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">方藥/穴位</div>
                           <div
@@ -359,7 +425,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.toll && idx.toll.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.toll && idx.toll.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">收費</div>
                           <div
@@ -368,7 +437,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.receipt && idx.receipt.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.receipt && idx.receipt.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">收據</div>
                           <div
@@ -377,7 +449,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.prescription && idx.prescription.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.prescription && idx.prescription.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">到診證明書</div>
                           <div
@@ -386,7 +461,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.pasthistory && idx.pasthistory.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.pasthistory && idx.pasthistory.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">既往史</div>
                           <div
@@ -395,7 +473,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.pasthistorydate && idx.pasthistorydate.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.pasthistorydate && idx.pasthistorydate.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">既往史日期</div>
                           <div
@@ -404,7 +485,10 @@ const SearchResultPage: FC = () => {
                           >
                           </div>
                         </div>
-                      : idx.detail && idx.detail.toString().includes(_searchText) ?
+                      : null
+                    }
+                    {
+                      idx.detail && idx.detail.toString().includes(_searchText) ?
                         <div className="flex flex-row p-3">
                           <div className="pr-3 w-[100px]">現病史</div>
                           <div
