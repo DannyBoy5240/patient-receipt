@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const mysql = require("mysql");
 const multer = require("multer");
+const resolvePath = require('path').resolve;
+const fs = require('fs');
 const app = express();
 
 app.use(cors());
@@ -18,7 +20,7 @@ const upload = multer({ dest: "uploads/" });
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "Dannyboy5240!",
   database: "patientsystem",
 });
 
@@ -26,6 +28,14 @@ db.connect((err) => {
   if (err) throw err;
   console.log("Connected to MySQL database!");
 });
+
+app.get('*', (req, res) => {
+  const contents = fs.readFileSync(
+    resolvePath(__dirname, '../build/index.html'),
+    'utf8',
+  )
+  res.send(contents)
+})
 
 // Able to Access and Get Image
 app.use("/uploads", express.static("uploads"));
