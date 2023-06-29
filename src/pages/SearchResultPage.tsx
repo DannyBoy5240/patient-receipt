@@ -172,9 +172,9 @@ const SearchResultPage: FC = () => {
                 })
                 .map((idx: any, kkk: any) => (
                   <div
-                    className="absolute p-4 rounded-xl border border-[#D3E7F6] shadow-lg bg-white w-full"
+                    className="p-4 rounded-xl border border-[#D3E7F6] shadow-lg bg-white w-full"
                     key={idx.date + kkk}
-                    style={{ top: kkk * 75 + 20, zIndex: kkk }}
+                    // style={{ top: kkk * 75 + 20, zIndex: kkk }}
                     onClick={() => {
                       
                       idx.name && idx.name.toString().includes(_searchText) || idx.engname && idx.engname.toString().includes(_searchText) ||
@@ -237,10 +237,11 @@ const SearchResultPage: FC = () => {
                     </div>
                     {
                       idx.name && idx.name.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">中文姓名</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.name, 20) }}
                           >
                           </div>
@@ -249,10 +250,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.engname && idx.engname.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">英文姓名</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.engname, 20) }}
                           >
                           </div>
@@ -261,10 +263,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.birthday && idx.birthday.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">出生日期</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.birthday, 20) }}
                           >
                           </div>
@@ -273,10 +276,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.patientid && idx.patientid.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">身份證號碼</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.patientid, 20) }}
                           >
                           </div>
@@ -285,10 +289,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.telephone && idx.telephone.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">電話號碼</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.telephone, 20) }}
                           >
                           </div>
@@ -297,10 +302,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.address && idx.address.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">地址</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.address, 20) }}
                           >
                           </div>
@@ -309,10 +315,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.emergency && idx.emergency.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">緊急聯絡人</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.emergency, 20) }}
                           >
                           </div>
@@ -321,10 +328,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.emergencynumber && idx.emergencynumber.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">緊急聯絡人電話</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.emergencynumber, 20) }}
                           >
                           </div>
@@ -333,10 +341,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.doctorid && idx.doctorid.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">DoctorID</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.doctorid, 20) }}
                           >
                           </div>
@@ -345,10 +354,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.doctor && idx.doctor.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">医生</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.doctor, 20) }}
                           >
                           </div>
@@ -357,10 +367,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.date && idx.date.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">預約到診日期</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.date, 20) }}
                           >
                           </div>
@@ -369,10 +380,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.albumtext && idx.albumtext.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">病歷相簿</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.albumtext, 20) }}
                           >
                           </div>
@@ -381,10 +393,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.disease && idx.disease.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">疾病</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.disease, 20) }}
                           >
                           </div>
@@ -393,10 +406,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.diagnosis && idx.diagnosis.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">診斷</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.diagnosis, 20) }}
                           >
                           </div>
@@ -405,10 +419,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.syndromes && idx.syndromes.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">證型</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.syndromes, 20) }}
                           >
                           </div>
@@ -417,10 +432,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.medicines && idx.medicines.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">方藥/穴位</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.medicines, 20) }}
                           >
                           </div>
@@ -429,10 +445,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.toll && idx.toll.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">收費</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.toll, 20) }}
                           >
                           </div>
@@ -441,10 +458,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.receipt && idx.receipt.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">收據</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.receipt, 20) }}
                           >
                           </div>
@@ -453,10 +471,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.prescription && idx.prescription.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">到診證明書</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.prescription, 20) }}
                           >
                           </div>
@@ -465,10 +484,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.pasthistory && idx.pasthistory.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">既往史</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.pasthistory, 20) }}
                           >
                           </div>
@@ -477,10 +497,11 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.pasthistorydate && idx.pasthistorydate.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">既往史日期</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.pasthistorydate, 20) }}
                           >
                           </div>
@@ -489,15 +510,16 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.detail && idx.detail.toString().includes(_searchText) ?
-                        <div className="flex flex-row p-3">
+                        <div className="flex flex-row px-3 py-1">
                           <div className="pr-3 w-[100px]">現病史</div>
                           <div
-                            style={{ width: "100%", overflowWrap: "break-word" }}
+                            className="grow"
+                            style={{ overflowWrap: "break-word" }}
                             dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.detail, 20) }}
                           >
                           </div>
                         </div>
-                      : <div className="p-3"></div>
+                      : null
                     }
                   </div>
                 ))}
