@@ -72,7 +72,6 @@ const RecipePage: FC = () => {
         if (data.data.length > 0) {
           // update current receipt
           setContext(data.data[0]);
-          console.log("context -> ", data.data[0]);
 
           const temp = data.data[0];
           setCurName(temp.name);

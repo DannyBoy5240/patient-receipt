@@ -35,9 +35,9 @@ const SearchPage: FC = () => {
   };
 
   const viewSearchResultHandler = async () => {
-    if (!searchText || searchText == ") {
-	setErrorMessage("Input search keyword!");
-	return;	
+    if (!searchText || searchText == "") {
+      setErrorMessage("Input search keyword!");
+      return;	
     }
     const curDate = updateDateTimeFormat(new Date());
     const data = { searchText, curDate };
@@ -51,7 +51,6 @@ const SearchPage: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Get searched patient card for payment successfully!");
-        console.log("ptcardspayment -> ", data);
         if (data.data.length > 0)
           navigate("/searchresult", {
             state: { context: data.data, searchtext: searchText },

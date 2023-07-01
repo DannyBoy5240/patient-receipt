@@ -390,8 +390,6 @@ const CheckPatient: FC = () => {
     // -- load album images
     files.map((idx: File) => handleUpload(idx));
 
-    console.log("patientillness -> ", presentIllness, " -> ", new Date().toISOString().substring(0, 10));
-
     const presentillness = presentIllness;
     const presentillnessdate = new Date().toISOString().substring(0, 10);
 

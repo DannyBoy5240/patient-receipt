@@ -50,13 +50,9 @@ CREATE TABLE `patients` (
   `pasthistory` text DEFAULT NULL,
   `pasthistorydate` varchar(50) DEFAULT NULL,
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `patients` */
-
-insert  into `patients`(`id`,`name`,`engname`,`birthday`,`sex`,`patientid`,`telephone`,`address`,`emergency`,`emergencynumber`,`pasthistory`,`pasthistorydate`) values 
-(16,'Test','AAAA','1993-06-28',1,'BBBB','CCCC','AAAA','BBBB','CCCC','AAAA','28/06/2023'),
-(17,'Test1','AABE','2000-06-10',1,'BBEC','CCCC','AABB','AAAA','BBBB',NULL,NULL);
 
 /*Table structure for table `pt_cards` */
 
@@ -69,7 +65,7 @@ CREATE TABLE `pt_cards` (
   `doctor` varchar(50) DEFAULT NULL,
   `date` varchar(50) DEFAULT NULL,
   `album` text DEFAULT NULL,
-  `albumtext` text DEFAULT NULL,
+  `albumtext` text NOT NULL,
   `disease` varchar(255) DEFAULT NULL,
   `diagnosis` varchar(255) DEFAULT NULL,
   `syndromes` text DEFAULT NULL,
@@ -84,15 +80,9 @@ CREATE TABLE `pt_cards` (
   `pasthistorydate` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`cardid`),
   KEY `cardid` (`cardid`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `pt_cards` */
-
-insert  into `pt_cards`(`cardid`,`doctorid`,`patientid`,`doctor`,`date`,`album`,`albumtext`,`disease`,`diagnosis`,`syndromes`,`medicines`,`remark`,`toll`,`checked`,`paid`,`receipt`,`prescription`,`pasthistory`,`pasthistorydate`) values 
-(17,'135791','BBBB','Yukko','2023-06-28T19:33:00.000Z',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL),
-(18,'135791','BBBB','Yukko','2023-06-28T19:28:00.000Z',', 72aa12d48eb35f6e7611838003e058c1','AAAAA',NULL,'AAAA','BBB','[{\"name\":\"ww3\",\"amount\":\"2asd23\"}]','AB@@S@@C@@B@@3@@',NULL,1,0,NULL,NULL,NULL,NULL),
-(19,'135791','BBBB','Yukko','2023-06-28T19:49:00.000Z',NULL,'AAAA',NULL,'BBB','CCC','[{\"name\":\"CCC\",\"amount\":\"23\"}]','@@@@@@@@@@',NULL,1,0,NULL,NULL,NULL,NULL),
-(20,'135791','BBEC','Yukko','2023-06-29T01:59:00.000Z',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `pt_history` */
 
@@ -106,12 +96,6 @@ CREATE TABLE `pt_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `pt_history` */
-
-insert  into `pt_history`(`id`,`detail`,`date`,`doctorid`) values 
-('BBBB','BBBBB','2023-06-28','135791'),
-('BBBB','EEEECCCCC','2023-06-28','135791'),
-('BBBB','BBDDD','2023-06-28','135791'),
-('BBEC','EEEE','2023-06-28','135791');
 
 /*Table structure for table `users` */
 

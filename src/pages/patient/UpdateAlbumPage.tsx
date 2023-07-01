@@ -69,7 +69,6 @@ const UpdateAlbumPage: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Update Album Image Data successfully!");
-        console.log("albumdata->", data.data);
         if (data.data.length > 0) {
           setAlbumData(data.data[0]);
           setTotalCount(data.data[0].album.split(", ").length);

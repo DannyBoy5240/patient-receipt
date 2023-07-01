@@ -35,7 +35,6 @@ const PatientDetailPage: FC = () => {
       .then((data) => {
         console.log("Get Patient Detail by ID successfully!");
         if (data.data.length > 0) setUserData(data.data[0]);
-        console.log("patient info -->", data.data[0]);
       })
       .catch((error) => {
         console.error(error);

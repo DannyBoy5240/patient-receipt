@@ -42,20 +42,12 @@ const SearchResultPage: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Get searched patient card for payment successfully!");
-        console.log("searched result -> ", data.data);
         if (data.data.length > 0) {
-          // setContext(data.data.filter(
-          //   (obj: any, index: any) =>
-          //     data
-          //       .slice(0, index)
-          //       .every((otherObj: any) => JSON.stringify(obj) !== JSON.stringify(otherObj))
-          // ));
           setContext(data.data);
         }
       })
       .catch((error) => {
         console.error(error);
-        // handle error
       });
   };
 
@@ -141,14 +133,7 @@ const SearchResultPage: FC = () => {
                   const isUniqueCardId = array.findIndex((item: any) => item.cardid === obj.cardid) === index;                
                   return isUniqueCardId;
                 })
-                // .filter((obj: any, index: number, array: any) => {
-                //   console.log("---", obj.patientid, "---", obj.detail, "***", obj.detail.toString().includes(_searchText));
-                //   return !array.some((item: any, itemIndex: number) => {
-                //     return itemIndex !== index && item.patientid === obj.patientid && item.detail === obj.detail && (obj.detail && obj.detail.toString().includes(_searchText));
-                //   });
-                // })
                 .filter((obj: any, index: any, array: any) => {
-                  console.log("*", obj);
                   if (obj.name && obj.name.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.name && idx.name.includes(_searchText)))  return false;
                   if (obj.engname && obj.engname.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.engname && idx.engname.includes(_searchText)))  return false;
                   if (obj.birthday && obj.birthday.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.birthday && idx.birthday.includes(_searchText)))  return false;

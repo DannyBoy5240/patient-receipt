@@ -48,7 +48,6 @@ const Home: FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("homedata -> ", data.data);
         const filteredData = data.data.filter((item: any) => {
           const itemDate = new Date(item.date);
           return item.checked == 0 && itemDate.getDate() === new Date().getDate() &&

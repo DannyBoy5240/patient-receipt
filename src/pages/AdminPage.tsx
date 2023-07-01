@@ -38,7 +38,6 @@ const AdminPage: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Get searched patient card for payment successfully!");
-        console.log("context -> ", data.data);
         setContext(data.data);
       })
       .catch((error) => {

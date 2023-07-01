@@ -45,7 +45,6 @@ const PatientRecordPage: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Get Patient Detail by ID successfully!");
-        console.log("context -> ", data.data);
         if (data.data.length > 0) {
           setPtCardList(data.data);
           setCurrentSelected(data.data.length - 1);

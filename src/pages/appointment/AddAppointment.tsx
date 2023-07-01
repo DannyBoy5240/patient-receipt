@@ -50,7 +50,6 @@ const AddAppointment: FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("searched Data -> ", data.data.length);
         if (data.data.length > 0)
           navigate("/scheduleappointment", { state: { context: data.data } });
         else setErrorMessage("No such patients exists!");

@@ -15,13 +15,13 @@ const path = require('path');
 app.use(cors());
 app.use(bodyParser.json());
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: resolvePath(__dirname, "../build/api/uploads/") });
 
 // MySQL Configuration
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Dannyboy0524!",
+  password: "",
   database: "patientsystem",
 });
 
@@ -40,7 +40,47 @@ app.get('*', (req, res) => {
 })
 
 // Able to Access and Get Image
-app.use("/api/uploads", express.static(path.join(__dirname, 'uploads')));
+// app.use("/api/uploads", express.static(path.join(__dirname, 'uploads')));
+
+// Clear endpoint for table database
+app.post("/api/clear", (req, res) => {
+  // patients
+  db.query(
+    `DELETE from patients`,
+    [],
+    (err, rows) => {
+      if (err) {
+        res.status(500).json({message: err.message});
+      } else {
+        res.status(200).json({message: "DELETE patients table successfully!"});
+      }
+    }
+  );
+  // pt_cards
+  db.query(
+    `DELETE from pt_cards`,
+    [],
+    (err, rows) => {
+      if (err) {
+        res.status(500).json({message: err.message});
+      } else {
+        res.status(200).json({message: "DELETE pt_cards table successfully!"});
+      }
+    }
+  );
+  // pt_history
+  db.query(
+    `DELETE from pt_history`,
+    [],
+    (err, rows) => {
+      if (err) {
+        res.status(500).json({message: err.message});
+      } else {
+        res.status(200).json({message: "DELETE pt_history table successfully!"});
+      }
+    }
+  )
+});
 
 // ----------------------------- user authentication - login/signup/password reset ---------------------------------
 app.post("/api/login", (req, res) => {
@@ -784,12 +824,15 @@ app.post("/api/uploadavatar", upload.single("file"), (req, res) => {
 // ------------------------------ Search Patient Card for Payment ---------------------------------
 app.post("/api/getptcardpayment", (req, res) => {
   const { searchText, curDate, paidMode } = req.body;
+
   if (searchText) {
     db.query(
       `SELECT C.*, D.* FROM (SELECT A.*, B.patientid AS PID, B.cardid, B.doctorid, B.doctor, B.date, B.albumtext, B.disease, B.diagnosis, B.syndromes, B.toll, B.medicines, B.receipt, B.prescription FROM patients AS A LEFT JOIN pt_cards AS B ON A.patientid = B.patientid) AS C LEFT JOIN pt_history AS D ON C.patientid=D.id
         WHERE (COALESCE(C.name, '') LIKE ? OR COALESCE(C.engname, '') LIKE ? OR COALESCE(C.birthday, '') LIKE ? 
           OR COALESCE(C.patientid, '') LIKE ? OR COALESCE(C.telephone, '') LIKE ? OR COALESCE(C.address, '') LIKE ? 
-          OR COALESCE(C.emergency, '') LIKE ? OR COALESCE(C.emergencynumber, '') LIKE ? OR COALESCE(C.doctorid, '') LIKE ?
+          OR COALESCE(C.emergency, '') LIKE ? OR COALESCE(C.emergencynumber, '') LIKE ?
+          OR COALESCE(C.pasthistory, '') LIKE ? OR COALESCE(C.pasthistorydate, '') LIKE ?
+          OR COALESCE(C.doctorid, '') LIKE ?
           OR COALESCE(C.patientid, '') LIKE ? OR COALESCE(C.doctor, '') LIKE ? OR COALESCE(C.date, '') LIKE ?
           OR COALESCE(C.albumtext, '') LIKE ? OR COALESCE(C.disease, '') LIKE ? OR COALESCE(C.diagnosis, '') LIKE ?
           OR COALESCE(C.syndromes, '') LIKE ? OR COALESCE(C.medicines, '') LIKE ?
@@ -799,7 +842,7 @@ app.post("/api/getptcardpayment", (req, res) => {
         `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
         `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
         `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,
-        `%${searchText}%`,`%${searchText}%`,`%${searchText}%`
+        `%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`,`%${searchText}%`
       ],
       (err, rows) => {
         if (err) {
@@ -935,7 +978,7 @@ async function sendPasswordResetEmail(email, token) {
       from: "info@doctor.com",
       to: email,
       subject: "Password Reset",
-      text: `Click the following link to reset your password: http://95.216.251.189:3000/resetpassword/${token}`,
+      text: `Click the following link to reset your password: https://fuqitongcmc.com/resetpassword/${token}`,
     };
 
     const info = await transporter.sendMail(mailOptions);

@@ -16,8 +16,6 @@ import PatientResultItem from "../components/patient/PatientResultItem";
 const PastHistoryPage: FC = () => {
   const location = useLocation();
   const context = location.state.context;
-  console.log("current date -> ", new Date());
-
   const [isEditMode, setIsEditMode] = useState(false);
   const [contentText, setContentText] = useState("");
   const [contentDate, setContentDate] = useState("");
@@ -35,7 +33,6 @@ const PastHistoryPage: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Get Patient Card Information successfully!");
-        console.log("--", data.data[0]);
         if (data.data.length > 0) {
           setContentText(data.data[0].pasthistory);
           setContentDate(data.data[0].pasthistorydate);

@@ -27,7 +27,6 @@ const ForgotPassword: FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("data -> ", data);
         if (data.status)
           setStatusMessage(
             "Password reset email sent! Check your email to verify it!"

@@ -19,8 +19,6 @@ interface PatientThumbnailProps {
 const PatientThumbnail: FC<PatientThumbnailProps> = ({ context }) => {
   const navigate = useNavigate();
 
-  console.log("thumbnail -> ", context);
-
   const [isCheckPatientOpen, setIsCheckPatientOpen] = useState(false);
   const [isOpenItemMenu, setIsOpenItemMenu] = useState(false);
   const [isItemDeleteOpen, setIsItemDeleteOpen] = useState(false);
