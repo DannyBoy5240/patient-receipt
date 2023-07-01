@@ -68,10 +68,10 @@ const PastHistoryPage: FC = () => {
   };
 
   const updatePatientHistoryHandler = async () => {
-    const cardid = context.cardid;
+    const patientid = context.patientid;
     const historydata = contentText;
     const historydate = getOnlyDate1(new Date());
-    const data = { cardid, historydata, historydate };
+    const data = { patientid, historydata, historydate };
     await fetch(BACKEND_URL + "/updateptcardpasthistory", {
       method: "POST",
       headers: {

@@ -320,24 +320,6 @@ app.post("/api/getpthistory", (req, res) => {
 
 // update patient card patient history
 app.post("/api/updateptcardpasthistory", (req, res) => {
-  // const { cardid, historydata, historydate } = req.body;
-  // // update on DB
-  // db.query(
-  //   `UPDATE pt_cards SET pasthistory = ?, pasthistorydate = ? WHERE cardid = ?`,
-  //   [historydata, historydate, cardid],
-  //   (err, rows) => {
-  //     if (err) {
-  //       res
-  //         .status(500)
-  //         .json({ message: "Update patient history failed!" + err.message });
-  //     } else {
-  //       res
-  //         .status(200)
-  //         .json({ message: "Update patient history successfully!" });
-  //     }
-  //   }
-  // );
-
   const { patientid, historydata, historydate } = req.body;
   // update on DB
   db.query(
