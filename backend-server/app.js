@@ -10,6 +10,7 @@ const multer = require("multer");
 const resolvePath = require('path').resolve;
 const fs = require('fs');
 const app = express();
+const path = require('path');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -20,7 +21,7 @@ const upload = multer({ dest: "uploads/" });
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Dannyboy5240!",
+  password: "Dannyboy0524!",
   database: "patientsystem",
 });
 
@@ -29,6 +30,7 @@ db.connect((err) => {
   console.log("Connected to MySQL database!");
 });
 
+app.use(express.static(resolvePath(__dirname, '../build')));
 app.get('*', (req, res) => {
   const contents = fs.readFileSync(
     resolvePath(__dirname, '../build/index.html'),
@@ -38,10 +40,10 @@ app.get('*', (req, res) => {
 })
 
 // Able to Access and Get Image
-app.use("/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static(path.join(__dirname, 'uploads')));
 
 // ----------------------------- user authentication - login/signup/password reset ---------------------------------
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   db.query(
     "SELECT * FROM users WHERE email = ?",
     [req.body.currentEmail],
@@ -111,7 +113,7 @@ async function sendPasswordResetEmail(email, token) {
 }
 
 // API endpoint for password reset request
-app.post("/resetpassword", (req, res) => {
+app.post("/api/resetpassword", (req, res) => {
   const { resetEmail } = req.body;
   if (!resetEmail) {
     return res.status(400).json({ message: "Email is required" });
@@ -138,7 +140,7 @@ app.post("/resetpassword", (req, res) => {
 });
 
 // API endpoint for password update
-app.post("/updatemailpassword", (req, res) => {
+app.post("/api/updatemailpassword", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res
@@ -162,7 +164,7 @@ app.post("/updatemailpassword", (req, res) => {
 // -----------------------------------------------------------------------------------------------------
 
 // get patient cards
-app.post("/getptcards", (req, res) => {
+app.post("/api/getptcards", (req, res) => {
   const { doctorID, curDate } = req.body;
   db.query(
     "SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.doctorid = ?",
@@ -178,7 +180,7 @@ app.post("/getptcards", (req, res) => {
 });
 
 // get patient cards by date
-app.post("/getptcardsbydate", (req, res) => {
+app.post("/api/getptcardsbydate", (req, res) => {
   // const { doctorID, viewDate } = req.body;
   // if (doctorID && doctorID != undefined && viewDate && viewDate != undefined) {
   //   db.query(
@@ -210,7 +212,7 @@ app.post("/getptcardsbydate", (req, res) => {
 });
 
 // get patient card by patient ID for alubm
-app.post("/getptcardbypatientid", (req, res) => {
+app.post("/api/getptcardbypatientid", (req, res) => {
   const patientID = req.body.patientID;
 
   db.query(
@@ -227,7 +229,7 @@ app.post("/getptcardbypatientid", (req, res) => {
 });
 
 // remove selected album image
-app.post("/removealbumimage", (req, res) => {
+app.post("/api/removealbumimage", (req, res) => {
   const { cardID, rmImgName } = req.body;
   const rmImgNameStr = ", " + rmImgName;
 
@@ -247,7 +249,7 @@ app.post("/removealbumimage", (req, res) => {
 });
 
 // get patient history
-app.post("/getpthistory", (req, res) => {
+app.post("/api/getpthistory", (req, res) => {
   const { patientID, doctorID } = req.body;
   if (doctorID == "") {
     db.query(
@@ -277,7 +279,7 @@ app.post("/getpthistory", (req, res) => {
 });
 
 // update patient card patient history
-app.post("/updateptcardpasthistory", (req, res) => {
+app.post("/api/updateptcardpasthistory", (req, res) => {
   // const { cardid, historydata, historydate } = req.body;
   // // update on DB
   // db.query(
@@ -316,7 +318,7 @@ app.post("/updateptcardpasthistory", (req, res) => {
 });
 
 // add new and update patient
-app.post("/updatepatient", (req, res) => {
+app.post("/api/updatepatient", (req, res) => {
   const { newPatient, mode, oldPatientID } = req.body;
 
   const formattedBirthday = new Date(newPatient.birthday)
@@ -414,7 +416,7 @@ app.post("/updatepatient", (req, res) => {
 });
 
 // update last patient history
-app.post("/updatelastpthistory", (req, res) => {
+app.post("/api/updatelastpthistory", (req, res) => {
   const { cardID, originPtHistory, newPtHistory } = req.body;
 
   const sql = `UPDATE pt_history SET detail = ? WHERE id = ? AND detail = ?`;
@@ -438,7 +440,7 @@ app.post("/updatelastpthistory", (req, res) => {
 // ------------------------------------------- Account Management ----------------------------------------------------
 
 // get account lists
-app.post("/getaccounts", (req, res) => {
+app.post("/api/getaccounts", (req, res) => {
   const sql = "SELECT * from users";
 
   db.query(sql, [], (err, rows) => {
@@ -453,7 +455,7 @@ app.post("/getaccounts", (req, res) => {
   });
 });
 
-app.post("/getaccountbyemail", (req, res) => {
+app.post("/api/getaccountbyemail", (req, res) => {
 
   const email = req.body.email;
 
@@ -472,7 +474,7 @@ app.post("/getaccountbyemail", (req, res) => {
 });
 
 // get company profile information
-app.post("/getcompanyinfo", (req, res) => {
+app.post("/api/getcompanyinfo", (req, res) => {
   const sql = "SELECT * from company";
 
   db.query(sql, [], (err, rows) => {
@@ -488,7 +490,7 @@ app.post("/getcompanyinfo", (req, res) => {
 });
 
 // update company profile information
-app.post("/updatecompanyprofile", (req, res) => {
+app.post("/api/updatecompanyprofile", (req, res) => {
   const { companyLogo, companyAddress, companyTelephone } = req.body;
 
   const sql = "UPDATE company SET logo = ?, address = ?, tel = ? WHERE id = 1";
@@ -506,7 +508,7 @@ app.post("/updatecompanyprofile", (req, res) => {
 });
 
 // add new account
-app.post("/addaccount", (req, res) => {
+app.post("/api/addaccount", (req, res) => {
   const { userAvatar, userName, userEmail, password, fullName, doctorID } =
     req.body;
 
@@ -532,7 +534,7 @@ app.post("/addaccount", (req, res) => {
 });
 
 // update profile account
-app.post("/updateaccount", (req, res) => {
+app.post("/api/updateaccount", (req, res) => {
   const {
     context,
     userAvatar,
@@ -566,7 +568,7 @@ app.post("/updateaccount", (req, res) => {
 });
 
 // delete account
-app.post("/deleteaccount", (req, res) => {
+app.post("/api/deleteaccount", (req, res) => {
   const email = req.body.email;
 
   const sql = `DELETE FROM users WHERE email = ?`;
@@ -585,7 +587,7 @@ app.post("/deleteaccount", (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // find patients by patientid and telephone number
-app.post("/findpatients", (req, res) => {
+app.post("/api/findpatients", (req, res) => {
   const searchtext = req.body.searchText;
 
   const sql = `SELECT * FROM patients WHERE patientid LIKE ? OR telephone LIKE ? OR name LIKE ? OR engname LIKE ? `;
@@ -604,11 +606,11 @@ app.post("/findpatients", (req, res) => {
 });
 
 // add new appointment
-app.post("/addnewappointment", (req, res) => {
+app.post("/api/addnewappointment", (req, res) => {
   const { doctorName, doctorID, patientID, dateTime } = req.body;
 
-  const sql = `INSERT INTO pt_cards (cardid, doctorid, patientid, doctor, date) VALUES (?, ?, ?, ?, ?)`;
-  const values = ["", doctorID, patientID, doctorName, dateTime];
+  const sql = `INSERT INTO pt_cards (doctorid, patientid, doctor, date) VALUES (?, ?, ?, ?)`;
+  const values = [doctorID, patientID, doctorName, dateTime];
 
   // Execute the query
   db.query(sql, values, (err, rows) => {
@@ -623,7 +625,7 @@ app.post("/addnewappointment", (req, res) => {
 });
 
 // update appointment
-app.post("/updateappointment", (req, res) => {
+app.post("/api/updateappointment", (req, res) => {
   const { cardID, dateTime } = req.body;
 
   const sql = `UPDATE pt_cards SET date = ? WHERE cardid = ?`;
@@ -641,7 +643,7 @@ app.post("/updateappointment", (req, res) => {
 });
 
 // delete patient card
-app.post("/deleteptcard", (req, res) => {
+app.post("/api/deleteptcard", (req, res) => {
   const context = req.body.context;
 
   const sql = `DELETE FROM pt_cards WHERE cardid = ?`;
@@ -660,7 +662,7 @@ app.post("/deleteptcard", (req, res) => {
 // --------------------------------- Check Patient -------------------------------------------
 
 // upload files
-app.post("/upload", upload.single("file"), (req, res) => {
+app.post("/api/upload", upload.single("file"), (req, res) => {
   const cardid = req.body.cardid;
   const filename = req.file.filename;
 
@@ -680,7 +682,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
 });
 
 // update check patient detail
-app.post("/updatecheckpatient", (req, res) => {
+app.post("/api/updatecheckpatient", (req, res) => {
   const {context, presentillness, presentillnessdate} = req.body;
 
   if (!context || !context.cardid) return;
@@ -755,7 +757,7 @@ app.post("/updatecheckpatient", (req, res) => {
 });
 
 // check patient status
-app.post("/checknewpatient", (req, res) => {
+app.post("/api/checknewpatient", (req, res) => {
   const patientid = req.body.patientid;
 
   // save in sql database
@@ -774,13 +776,13 @@ app.post("/checknewpatient", (req, res) => {
 });
 
 // upload Avatar
-app.post("/uploadavatar", upload.single("file"), (req, res) => {
+app.post("/api/uploadavatar", upload.single("file"), (req, res) => {
   const filename = req.file.filename;
   res.status(200).json({ filename: filename });
 });
 
 // ------------------------------ Search Patient Card for Payment ---------------------------------
-app.post("/getptcardpayment", (req, res) => {
+app.post("/api/getptcardpayment", (req, res) => {
   const { searchText, curDate, paidMode } = req.body;
   if (searchText) {
     db.query(
@@ -825,7 +827,7 @@ app.post("/getptcardpayment", (req, res) => {
   }
 });
 
-app.post("/checkptcardpaymentstate", (req, res) => {
+app.post("/api/checkptcardpaymentstate", (req, res) => {
   const cardid = req.body.cardid;
   db.query(
     "SELECT * FROM pt_cards WHERE cardid = ? AND paid = 0",
@@ -841,7 +843,7 @@ app.post("/checkptcardpaymentstate", (req, res) => {
   );
 });
 
-app.post("/updatecardpaid", (req, res) => {
+app.post("/api/updatecardpaid", (req, res) => {
   const cardid = req.body.cardid;
   db.query(
     "UPDATE pt_cards SET paid = 1 WHERE cardid = ?",
@@ -857,7 +859,7 @@ app.post("/updatecardpaid", (req, res) => {
 });
 
 // get patient cards
-app.post("/getptcardsbyid", (req, res) => {
+app.post("/api/getptcardsbyid", (req, res) => {
   const { cardid } = req.body;
   db.query(
     "SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.cardid = ?",
@@ -873,7 +875,7 @@ app.post("/getptcardsbyid", (req, res) => {
 });
 
 // get patient cards by patientid
-app.post("/getptcardsbypatientid", (req, res) => {
+app.post("/api/getptcardsbypatientid", (req, res) => {
   const { patientid } = req.body;
   db.query(
     "SELECT pt_cards.*, patients.* FROM pt_cards JOIN patients ON pt_cards.patientid = patients.patientid WHERE pt_cards.patientid = ?",
@@ -889,7 +891,7 @@ app.post("/getptcardsbypatientid", (req, res) => {
 });
 
 // --------------------------------- Receipt, Recipe, Prescription -------------------------------
-app.post("/updateptcardreceipt", (req, res) => {
+app.post("/api/updateptcardreceipt", (req, res) => {
   const { cardid, curReceipt, curToll } = req.body;
   db.query(
     `UPDATE pt_cards SET receipt = ?, toll = ? WHERE cardid = ?`,
@@ -901,7 +903,7 @@ app.post("/updateptcardreceipt", (req, res) => {
   );
 });
 
-app.post("/updateptcardprescription", (req, res) => {
+app.post("/api/updateptcardprescription", (req, res) => {
   const { cardid, curPrescription } = req.body;
   db.query(
     `UPDATE pt_cards SET prescription = ? WHERE cardid = ?`,

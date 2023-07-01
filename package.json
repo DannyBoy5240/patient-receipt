@@ -1,5 +1,5 @@
 {
-  "name": "doctor patient",
+  "name": "doctor-patient",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,6 +14,7 @@
     "@types/react-datepicker": "^4.11.2",
     "@types/react-dom": "^18.0.6",
     "browser-image-compression": "^2.0.2",
+    "eslint-webpack-plugin": "^4.0.1",
     "html-pdf": "^3.0.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",

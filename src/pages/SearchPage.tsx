@@ -35,6 +35,10 @@ const SearchPage: FC = () => {
   };
 
   const viewSearchResultHandler = async () => {
+    if (!searchText || searchText == ") {
+	setErrorMessage("Input search keyword!");
+	return;	
+    }
     const curDate = updateDateTimeFormat(new Date());
     const data = { searchText, curDate };
     await fetch(BACKEND_URL + "/getptcardpayment", {
