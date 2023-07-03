@@ -287,7 +287,7 @@ const RecipePage: FC = () => {
                               className="border border-black p-1 text-center w-1/3"
                               style={{lineHeight: "2", verticalAlign: "middle"}}
                             >
-                              {medicine.name} {medicine.amount}g
+                              {medicine.name} {medicine.amount}
                             </td>
                           ))}
                         </tr>
