@@ -606,11 +606,8 @@ const SearchResultPage: FC = () => {
                                   return isUniquePatientId;
                                 })
                                 .filter((obj: any, index: any, array: any) => {
-                                  return obj.detail && obj.detail.toString().includes(_searchText);
+                                  return obj.patientid === idx.patientid && obj.detail && obj.detail.toString().includes(_searchText);
                                 })
-                                // .filter((obj: any, index: any, array: any) => {
-                                //   return !(array.slice(0, index-1).some((idx: any) => obj.detail === idx.detail));
-                                // })
                                 .map((obj: any, index: any) => {
                                   return (<div key={"pthistorylst"+index}
                                       onClick={() => navigate("/patientrecord", {
