@@ -2,15 +2,10 @@ import { FC, useEffect, useState } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
-import Theme from "../assets/color";
 import { BACKEND_URL } from "../constants";
-
-import Avatar1 from "../assets/avatar1.svg";
-import DashBack from "../assets/img/alert_board.png";
 
 import NavBar from "../components/NavBar";
 import Header from "../components/Header";
-import PatientResultItem from "../components/patient/PatientResultItem";
 
 const SearchResultPage: FC = () => {
   const location = useLocation();
@@ -134,14 +129,28 @@ const SearchResultPage: FC = () => {
                   return isUniqueCardId;
                 })
                 .filter((obj: any, index: any, array: any) => {
-                  if (obj.name && obj.name.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.name && idx.name.includes(_searchText)))  return false;
-                  if (obj.engname && obj.engname.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.engname && idx.engname.includes(_searchText)))  return false;
-                  if (obj.birthday && obj.birthday.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.birthday && idx.birthday.includes(_searchText)))  return false;
-                  if (obj.telephone && obj.telephone.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.telephone && idx.telephone.includes(_searchText)))  return false;
-                  if (obj.address && obj.address.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.address && idx.address.includes(_searchText)))  return false;
-                  if (obj.emergency && obj.emergency.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.emergency && idx.emergency.includes(_searchText)))  return false;
-                  if (obj.emergencynumber && obj.emergencynumber.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.emergencynumber && idx.emergencynumber.includes(_searchText)))  return false;
-                  if (obj.doctorid && obj.doctorid.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.doctorid && idx.doctorid.includes(_searchText)))  return false;
+                  // patient information
+                  if (obj.name && obj.name.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.name && idx.name.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.engname && obj.engname.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.engname && idx.engname.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.birthday && obj.birthday.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.birthday && idx.birthday.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.telephone && obj.telephone.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.telephone && idx.telephone.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.address && obj.address.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.address && idx.address.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.emergency && obj.emergency.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.emergency && idx.emergency.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.emergencynumber && obj.emergencynumber.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.emergencynumber && idx.emergencynumber.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.doctorid && obj.doctorid.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.doctorid && idx.doctorid.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.pasthistory && obj.pasthistory.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.pasthistory && idx.pasthistory.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.pasthistorydate && obj.pasthistorydate.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.pasthistorydate && idx.pasthistorydate.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  // patient card information
                   if (obj.date && obj.date.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.date && idx.date.includes(_searchText)))  return false;
                   if (obj.disease && obj.disease.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.disease && idx.disease.includes(_searchText)))  return false;
                   if (obj.syndromes && obj.syndromes.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.syndromes && idx.syndromes.includes(_searchText)))  return false;
@@ -150,71 +159,14 @@ const SearchResultPage: FC = () => {
                   if (obj.toll && obj.toll.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.toll && idx.toll.includes(_searchText)))  return false;
                   if (obj.receipt && obj.receipt.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.receipt && idx.receipt.includes(_searchText)))  return false;
                   if (obj.prescription && obj.prescription.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.prescription && idx.prescription.includes(_searchText)))  return false;
-                  if (obj.pasthistory && obj.pasthistory.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.pasthistory && idx.pasthistory.includes(_searchText)))  return false;
-                  if (obj.pasthistorydate && obj.pasthistorydate.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.pasthistorydate && idx.pasthistorydate.includes(_searchText)))  return false;
-                  if (obj.detail && obj.detail.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.detail && idx.detail.includes(_searchText) && obj.patientid == idx.patientid))  return false;
+                  if (obj.detail && obj.detail.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.detail && idx.detail.includes(_searchText) && idx.patientid === obj.patientid))  return false;
                   return true;
                 })
-                .map((idx: any, kkk: any) => (
+                .map((idx: any, kkk: any, array: any) => (
                   <div
                     className="p-4 rounded-xl border border-[#D3E7F6] shadow-lg bg-white w-full"
                     key={idx.date + kkk}
-                    // style={{ top: kkk * 75 + 20, zIndex: kkk }}
-                    // onClick={() => {                      
-                    //   idx.name && idx.name.toString().includes(_searchText) || idx.engname && idx.engname.toString().includes(_searchText) ||
-                    //      idx.birthday && idx.birthday.toString().includes(_searchText) || idx.patientid && idx.patientid.toString().includes(_searchText) ||
-                    //      idx.telephone && idx.telephone.toString().includes(_searchText) || idx.address && idx.address.toString().includes(_searchText) ||
-                    //      idx.emergency && idx.emergency.toString().includes(_searchText) || idx.emergencynumber && idx.emergencynumber.toString().includes(_searchText) ||
-                    //      idx.doctorid && idx.doctorid.toString().includes(_searchText) || idx.doctor && idx.doctor.toString().includes(_searchText) ?
-                    //         navigate("/patientdetail", {
-                    //           state: {
-                    //             cardid: idx.cardid,
-                    //             date: idx.date,
-                    //           },
-                    //         })
-                    //   : idx.date && idx.date.toString().includes(_searchText) ||
-                    //       idx.disease && idx.disease.toString().includes(_searchText) || idx.diagnosis && idx.diagnosis.toString().includes(_searchText) ||
-                    //       idx.syndromes && idx.syndromes.toString().includes(_searchText) || idx.medicines && idx.medicines.toString().includes(_searchText) ?
-                    //         navigate("/recipe", {
-                    //           state: {
-                    //             context: idx,
-                    //           },
-                    //         })
-                    //   : idx.albumtext && idx.albumtext.toString().includes(_searchText) ?
-                    //         navigate("/patientalbum", {
-                    //           state: {
-                    //             context: idx,
-                    //             searchtext: _searchText,
-                    //           },
-                    //         })
-                    //   : idx.toll && idx.toll.toString().includes(_searchText) || idx.receipt && idx.receipt.toString().includes(_searchText) ?
-                    //         navigate("/receipt", {
-                    //           state: {
-                    //             context: idx,
-                    //           },
-                    //         })
-                    //   : idx.prescription && idx.prescription.toString().includes(_searchText) ?
-                    //         navigate("/prescription", {
-                    //           state: {
-                    //             context: idx,
-                    //           },
-                    //         })
-                    //   : idx.pasthistory && idx.pasthistory.toString().includes(_searchText) || idx.pasthistorydate && idx.pasthistorydate.toString().includes(_searchText) ?
-                    //         navigate("/pasthistory", {
-                    //           state: {
-                    //             context: idx,
-                    //           },
-                    //         })
-                    //   : idx.detail && idx.detail.toString().includes(_searchText) || idx.details && idx.details.toString().includes(_searchText) ?
-                    //         navigate("/patientrecord", {
-                    //           state: {
-                    //             context: idx,
-                    //             searchtext: idx.detail,
-                    //           },
-                    //         })
-                    //   : console.log("no matches!");
-                    // }}
-                  >
+                  > 
                     <div>
                       診症日期：
                       <span className="px-1">{getOnlyDate1(idx.date)}</span>
@@ -644,20 +596,39 @@ const SearchResultPage: FC = () => {
                     }
                     {
                       idx.detail && idx.detail.toString().includes(_searchText) ?
-                        <div className="flex flex-row px-3 py-1 hover:cursor-pointer"
-                          onClick={() => navigate("/patientrecord", {
-                            state: {
-                              context: idx,
-                              searchtext: idx.detail,
-                            },
-                          })}
-                        >
+                        <div className="flex flex-row px-3 py-1 hover:cursor-pointer">
                           <div className="pr-3 w-[100px]">現病史</div>
-                          <div
-                            className="grow"
-                            style={{ overflowWrap: "break-word" }}
-                            dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, idx.detail, 20) }}
-                          >
+                          <div>
+                          {
+                              context
+                                .filter((obj: any, index: any, array: any) => {
+                                  const isUniquePatientId = array.findIndex((item: any) => item.patientid === obj.patientid) === index;                
+                                  return isUniquePatientId;
+                                })
+                                .filter((obj: any, index: any, array: any) => {
+                                  return obj.detail && obj.detail.toString().includes(_searchText);
+                                })
+                                // .filter((obj: any, index: any, array: any) => {
+                                //   return !(array.slice(0, index-1).some((idx: any) => obj.detail === idx.detail));
+                                // })
+                                .map((obj: any, index: any) => {
+                                  return (<div key={"pthistorylst"+index}
+                                      onClick={() => navigate("/patientrecord", {
+                                        state: {
+                                          context: idx,
+                                          searchtext: idx.detail,
+                                        },
+                                      })}
+                                    >
+                                      <div  
+                                        className="grow py-[1px] hover:cursor-pointer"
+                                        key={"pthistorylst" + index}
+                                        style={{ overflowWrap: "break-word" }}
+                                        dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, obj.detail, 20) }}
+                                      ></div>
+                                    </div>)
+                                })
+                          }
                           </div>
                         </div>
                       : null

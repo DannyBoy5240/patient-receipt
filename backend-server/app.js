@@ -631,8 +631,8 @@ app.post("/api/findpatients", (req, res) => {
 app.post("/api/addnewappointment", (req, res) => {
   const { doctorName, doctorID, patientID, dateTime } = req.body;
 
-  const sql = `INSERT INTO pt_cards (doctorid, patientid, doctor, date) VALUES (?, ?, ?, ?)`;
-  const values = [doctorID, patientID, doctorName, dateTime];
+  const sql = `INSERT INTO pt_cards (doctorid, patientid, doctor, date, albumtext) VALUES (?, ?, ?, ?, ?)`;
+  const values = [doctorID, patientID, doctorName, dateTime, ""];
 
   // Execute the query
   db.query(sql, values, (err, rows) => {
