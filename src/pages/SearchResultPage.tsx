@@ -131,36 +131,97 @@ const SearchResultPage: FC = () => {
                 .filter((obj: any, index: any, array: any) => {
                   // patient information
                   if (obj.name && obj.name.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.name && idx.name.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.name && idx.name.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.engname && obj.engname.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.engname && idx.engname.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.engname && idx.engname.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.birthday && obj.birthday.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.birthday && idx.birthday.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.birthday && idx.birthday.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.telephone && obj.telephone.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.telephone && idx.telephone.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.telephone && idx.telephone.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.address && obj.address.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.address && idx.address.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.address && idx.address.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.emergency && obj.emergency.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.emergency && idx.emergency.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.emergency && idx.emergency.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.emergencynumber && obj.emergencynumber.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.emergencynumber && idx.emergencynumber.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.emergencynumber && idx.emergencynumber.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.doctorid && obj.doctorid.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.doctorid && idx.doctorid.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.doctorid && idx.doctorid.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.pasthistory && obj.pasthistory.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.pasthistory && idx.pasthistory.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.pasthistory && idx.pasthistory.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   if (obj.pasthistorydate && obj.pasthistorydate.toString().includes(_searchText) && 
-                    array.slice(0, index-1).some((idx: any) => idx.pasthistorydate && idx.pasthistorydate.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                    array.slice(0, index-1).some((idx: any) => 
+                      idx.pasthistorydate && idx.pasthistorydate.includes(_searchText) && idx.patientid === obj.patientid && idx.date === obj.date &&
+                      idx.disease === obj.disease && idx.syndromes === obj.syndromes && idx.medicines === obj.medicines &&
+                      idx.albumtext === obj.albumtext && idx.toll === obj.toll && idx.receipt && obj.receipt &&
+                      idx.prescription === obj.prescription && idx.detail === obj.detail))  return false;
                   // patient card information
-                  if (obj.date && obj.date.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.date && idx.date.includes(_searchText)))  return false;
-                  if (obj.disease && obj.disease.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.disease && idx.disease.includes(_searchText)))  return false;
-                  if (obj.syndromes && obj.syndromes.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.syndromes && idx.syndromes.includes(_searchText)))  return false;
-                  if (obj.medicines && obj.medicines.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.medicines && idx.medicines.includes(_searchText)))  return false;
-                  if (obj.albumtext && obj.albumtext.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.albumtext && idx.albumtext.includes(_searchText)))  return false;
-                  if (obj.toll && obj.toll.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.toll && idx.toll.includes(_searchText)))  return false;
-                  if (obj.receipt && obj.receipt.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.receipt && idx.receipt.includes(_searchText)))  return false;
-                  if (obj.prescription && obj.prescription.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.prescription && idx.prescription.includes(_searchText)))  return false;
-                  if (obj.detail && obj.detail.toString().includes(_searchText) && array.slice(0, index-1).some((idx: any) => idx.detail && idx.detail.includes(_searchText) && idx.patientid === obj.patientid))  return false;
+                  if (obj.date && obj.date.toString().includes(_searchText))  return true;
+                  if (obj.disease && obj.disease.toString().includes(_searchText))  return true;
+                  if (obj.syndromes && obj.syndromes.toString().includes(_searchText))  return true;
+                  if (obj.medicines && obj.medicines.toString().includes(_searchText))  return true;
+                  if (obj.albumtext && obj.albumtext.toString().includes(_searchText))  return true;
+                  if (obj.toll && obj.toll.toString().includes(_searchText))  return true;
+                  if (obj.receipt && obj.receipt.toString().includes(_searchText))  return true;
+                  if (obj.prescription && obj.prescription.toString().includes(_searchText))  return true;
+                  if (obj.detail && obj.detail.toString().includes(_searchText) && 
+                    array.slice(0, index-1).some((idx: any) => idx.detail && idx.detail.includes(_searchText) && idx.patientid === obj.patientid))  return false;
                   return true;
+                })
+                .filter((obj: any, index: any, array: any) => {
+                  return !array.slice(0, index-1).some((idx: any) => {
+                    let flag = true;
+                    if (obj.disease && obj.disease.toString().includes(_searchText) && obj.disease !== idx.disease) flag = false;
+                    if ((!obj.disease || obj.disease.toString().includes(_searchText)) && (idx.disease && idx.disease.toString().includes(_searchText)))  flag = false;
+                    if (obj.syndromes && obj.syndromes.toString().includes(_searchText) && obj.syndromes !== idx.syndromes) flag = false;
+                    if ((!obj.syndromes || obj.syndromes.toString().includes(_searchText)) && (idx.syndromes && idx.syndromes.toString().includes(_searchText)))  flag = false;
+                    if (obj.medicines && obj.medicines.toString().includes(_searchText) && obj.medicines !== idx.medicines) flag = false;
+                    if ((!obj.medicines || obj.medicines.toString().includes(_searchText)) && (idx.medicines && idx.medicines.toString().includes(_searchText)))  flag = false;
+                    if (obj.albumtext && obj.albumtext.toString().includes(_searchText) && obj.albumtext !== idx.albumtext) flag = false;
+                    if ((!obj.albumtext || obj.albumtext.toString().includes(_searchText)) && (idx.albumtext && idx.albumtext.toString().includes(_searchText)))  flag = false;
+                    if (obj.toll && obj.toll.toString().includes(_searchText) && obj.toll !== idx.toll) flag = false;
+                    if ((!obj.toll || obj.toll.toString().includes(_searchText)) && (idx.toll && idx.toll.toString().includes(_searchText)))  flag = false;
+                    if (obj.receipt && obj.receipt.toString().includes(_searchText) && obj.receipt !== idx.receipt) flag = false;
+                    if ((!obj.receipt || obj.receipt.toString().includes(_searchText)) && (idx.receipt && idx.receipt.toString().includes(_searchText)))  flag = false;
+                    if (obj.prescription && obj.prescription.toString().includes(_searchText) && obj.prescription !== idx.prescription) flag = false;
+                    if ((!obj.prescription || obj.prescription.toString().includes(_searchText)) && (idx.prescription && idx.prescription.toString().includes(_searchText)))  flag = false;
+                    return flag;
+                  })
                 })
                 .map((idx: any, kkk: any, array: any) => (
                   <div
@@ -595,40 +656,82 @@ const SearchResultPage: FC = () => {
                       : null
                     }
                     {
-                      idx.detail && idx.detail.toString().includes(_searchText) ?
-                        <div className="flex flex-row px-3 py-1 hover:cursor-pointer">
-                          <div className="pr-3 w-[100px]">現病史</div>
-                          <div>
-                          {
-                              context
-                                .filter((obj: any, index: any, array: any) => {
-                                  const isUniquePatientId = array.findIndex((item: any) => item.patientid === obj.patientid) === index;                
-                                  return isUniquePatientId;
-                                })
-                                .filter((obj: any, index: any, array: any) => {
-                                  return obj.patientid === idx.patientid && obj.detail && obj.detail.toString().includes(_searchText);
-                                })
-                                .map((obj: any, index: any) => {
-                                  return (<div key={"pthistorylst"+index}
-                                      onClick={() => navigate("/patientrecord", {
-                                        state: {
-                                          context: idx,
-                                          searchtext: idx.detail,
-                                        },
-                                      })}
-                                    >
-                                      <div  
-                                        className="grow py-[1px] hover:cursor-pointer"
-                                        key={"pthistorylst" + index}
-                                        style={{ overflowWrap: "break-word" }}
-                                        dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, obj.detail, 20) }}
-                                      ></div>
-                                    </div>)
-                                })
-                          }
+                      context
+                        .filter((obj: any, index: any, array: any) => {
+                          const isSearched = obj.patientid === idx.patientid && obj.detail && obj.detail.toString().includes(_searchText)
+                          return isSearched;
+                        })
+                        .filter((obj: any, index: any, array: any) => {
+                          const isUniqueDetail = array.findIndex((item: any) => item.detail === obj.detail) === index;
+                          return isUniqueDetail;
+                        }).length > 0 ?
+                          <div className="flex flex-row px-3 py-1 hover:cursor-pointer">
+                            <div className="pr-3 w-[100px]">現病史</div>
+                            <div>
+                            {
+                                context
+                                  .filter((obj: any, index: any, array: any) => {
+                                    return obj.patientid === idx.patientid && obj.detail && obj.detail.toString().includes(_searchText);
+                                  })
+                                  .filter((obj: any, index: any, array: any) => {
+                                    const isUniqueDetail = array.findIndex((item: any) => item.detail === obj.detail) === index;
+                                    return isUniqueDetail;
+                                  })
+                                  .map((obj: any, index: any) => {
+                                    return (<div key={"pthistorylst"+index}
+                                        onClick={() => navigate("/patientrecord", {
+                                          state: {
+                                            context: obj,
+                                            searchtext: obj.detail,
+                                          },
+                                        })}
+                                      >
+                                        <div  
+                                          className="grow py-[1px] hover:cursor-pointer"
+                                          key={"pthistorylst" + index}
+                                          style={{ overflowWrap: "break-word" }}
+                                          dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, obj.detail, 20) }}
+                                        ></div>
+                                      </div>)
+                                  })
+                            }
+                            </div>
                           </div>
-                        </div>
-                      : null
+                        : null
+                      // idx.detail && idx.detail.toString().includes(_searchText) ?
+                      //   <div className="flex flex-row px-3 py-1 hover:cursor-pointer">
+                      //     <div className="pr-3 w-[100px]">現病史</div>
+                      //     <div>
+                      //     {
+                      //         context
+                      //           .filter((obj: any, index: any, array: any) => {
+                      //             const isUniquePatientId = array.findIndex((item: any) => item.patientid === obj.patientid) === index;                
+                      //             return isUniquePatientId;
+                      //           })
+                      //           .filter((obj: any, index: any, array: any) => {
+                      //             return obj.patientid === idx.patientid && obj.detail && obj.detail.toString().includes(_searchText);
+                      //           })
+                      //           .map((obj: any, index: any) => {
+                      //             return (<div key={"pthistorylst"+index}
+                      //                 onClick={() => navigate("/patientrecord", {
+                      //                   state: {
+                      //                     context: idx,
+                      //                     searchtext: idx.detail,
+                      //                   },
+                      //                 })}
+                      //               >
+                      //                 <div  
+                      //                   className="grow py-[1px] hover:cursor-pointer"
+                      //                   key={"pthistorylst" + index}
+                      //                   style={{ overflowWrap: "break-word" }}
+                      //                   dangerouslySetInnerHTML={{ __html: showTextWithSearch(_searchText, obj.detail, 20) }}
+                      //                 ></div>
+                      //               </div>)
+                      //           })
+                      //     }
+                      //     </div>
+                      //   </div>
+                      // : null
                     }
                   </div>
                 ))}
